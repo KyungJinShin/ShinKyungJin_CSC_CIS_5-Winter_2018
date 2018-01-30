@@ -19,10 +19,6 @@ using namespace std;
 //                   2-D Array Dimensions
 
 //Function Prototypes
-//char cmptrGs();  //() because we don't need input
-//char userGs();   //
-//string winner(char,char,char);
-//void gameRPS();  //Game Function
 
 //Execution Begins Here
 int main(int argc, char** argv)  {    
@@ -30,15 +26,53 @@ int main(int argc, char** argv)  {
     srand(static_cast<unsigned int>(time(0)));
     
     //Declare Variables
+    char comput;
     char comp; //computer
+    char player;//player
     char user1;//user 1
-    char user2;//user 2
+    int num;   //Integer Number, but I will range to 0 to 3
+    //char user2;//user 2
 
     //Initialize Variables
+    num=rand()%3; // number of 0 to 3
+    
+    //Start the Game
+    cout<<"This is Yut Nori, Korean New Years Game"<<endl;
+    cout<<"To choose who goes first, play the Rock - Paper - Scissors"<<endl;
+    
+    //Rock - Paper - Scissors Game  
+    if (num==0)      comput='R';  //When number=0, computer is Rock 
+    else if (num==1) comput='S';  //When number=1, computer is Scissor
+    else if (num==2) comput='P';  //When number=2, computer is Paper 
+    cout<<"What is your choice between rock as R, paper as P, and scissor as S ?"<<endl;
+    cin>>player;
     
     //Process/Map inputs to outputs
-//    gameRPS();
-    cout<<user1<<" is first, "<<user2<<" is second, and "<<comp<<" is the last turn"<<endl;
+    cout<<"The player plays "<<player<<endl;
+    cout<<"The computer plays "<<comput<<endl;
+    if(comput==player) {
+        cout<<"This game is tie"<<endl;
+        do{
+            cout<<"What is your choice between rock as R, paper as P, and scissor as S ?"<<endl;
+            cin>>player;
+        }while(comput!=player);
+    }else if(comput=='R' && player=='P') {  //When player choose Paper,and computer choose Rock 
+        cout<<"The player is win, so the player goes first"<<endl;    
+    }else if(comput=='R' && player=='S') {  //When player choose Scissor,and computer choose Rock 
+        cout<<"The player is lose, so the player goes second"<<endl;
+    }else if(comput=='P' && player=='S') {  //When player choose Scissor,and computer choose Paper 
+        cout<<"The player is win, so the player goes first"<<endl;     
+    }else if(comput=='P' && player=='R') {  //When player choose Rock,and computer choose Paper 
+        cout<<"The player is lose, so the player goes second"<<endl;
+    }else if(comput=='S' && player=='R') {  //When player choose Rock,and computer choose Scissor
+        cout<<"The player is win, so the player goes first"<<endl;
+    }else if(comput=='S' && player=='P') {  //When player choose Paper,and computer choose Scissor
+        cout<<"The player is lose, so the player goes second"<<endl;
+    }
+    
+    //Process/Map inputs to outputs
+
+    cout<<user<<" is first, "<<comp<<" is second"<<endl;
     cout<<"0----0----0----0----0----0----0"<<endl;
     cout<<setw(4)<<"| a7"<<setw(5)<<" | b7"<<setw(5)<<" | c7"<<setw(5)<<" | d7"<<setw(5)<<" | e7"<<setw(5)<<" | f7 |"<<endl;
     cout<<"0----0----0----0----0----0----0"<<endl;
@@ -99,12 +133,10 @@ int main(int argc, char** argv)  {
     int nThrows;
     
     //Initialize Variables
-
     f5=f1=f2=f3=f4=0;
     nThrows=36000;
     
     //Process/Map inputs to outputs
-
     for(int thrw=1;thrw<=nThrows;thrw++){ 
         char stick1=rand()%2;//Range [0,1]
         char stick2=rand()%2;//Range [0,1]
@@ -122,37 +154,35 @@ int main(int argc, char** argv)  {
                 default:cout<<"Error"<<endl;
             }
     }
+//    return 0;
+//}    
+         
+    cout<<"Press enter to throw the 4 wood sticks"<<endl;
+    cin.getline>>user;
+    
+    bool stick1,stick2,stick3,stick4;
+    if(stick1=='B' && stick2=='B' && stick3=='B' && stick4=='B') {
+        cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
+        cout<<"You will move 5 steps, and you have bonus to throw the sticks again"<<endl;
+        cout<<"Press enter to throw the 4 wood sticks"<<endl;
+        cin.getline>>user;
+    }else if(stick1=='F' && stick2=='F' && stick3=='F' && stick4=='F') {
+        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
+        cout<<"You will move 4 steps, and you have bonus to throw the sticks again"<<endl;
+        cout<<"Press enter to throw the 4 wood sticks"<<endl;
+        cin.getline>>user;
+    }else if(stick1=='F' && stick2=='B' && stick3=='B' && stick4=='B') {
+        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
+        cout<<"You will move 1 step"<<endl;
+    }else if(stick1=='F' && stick2=='F' && stick3=='B' && stick4=='B') {
+        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
+        cout<<"You will move 2 steps"<<endl;
+    }else if(stick1=='F' && stick2=='F' && stick3=='F' && stick4=='B') {
+        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
+        cout<<"You will move 3 steps"<<endl;
+    
     return 0;
-}    
-//    cout<<endl<< a5 <<setw(4)<< b5 <<setw(4)<< c5 <<setw(4)<< d5 <<setw(4)<< e5 <<setw(4)<< f5 <<endl;
-//    cout<<endl<< a4 <<setw(4)<< b4 <<setw(4)<< c4 <<setw(4)<< d4 <<setw(4)<< e4 <<setw(4)<< f4 <<endl;
-//    cout<<endl<< a3 <<setw(4)<< b3 <<setw(4)<< c3 <<setw(4)<< d3 <<setw(4)<< e3 <<setw(4)<< f3 <<endl;            
-//    cout<<endl<< a2 <<setw(4)<< b2 <<setw(4)<< c2 <<setw(4)<< d2 <<setw(4)<< e2 <<setw(4)<< f2 <<endl;
-//    cout<<endl<< a1 <<setw(4)<< b1 <<setw(4)<< c1 <<setw(4)<< d1 <<setw(4)<< e1 <<setw(4)<< f1 <<endl;        
-//            
-//    cout<<"Press enter to throw the 4 wood sticks"<<endl;
-//    cin.getline>>user1;
-//    bool stick1,stick2,stick3,stick4;
-//    if(stick1=='B' && stick2=='B' && stick3=='B' && stick4=='B') {
-//        cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 5 steps, and you have bonus to throw the sticks again"<<endl;
-//        cout<<"Press enter to throw the 4 wood sticks"<<endl;
-//        cin.getline>>user2;
-//    }else if(stick1=='F' && stick2=='F' && stick3=='F' && stick4=='F') {
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 4 steps, and you have bonus to throw the sticks again"<<endl;
-//        cout<<"Press enter to throw the 4 wood sticks"<<endl;
-//        cin.getline>>user2;
-//    }else if(stick1=='F' && stick2=='B' && stick3=='B' && stick4=='B') {
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 1 step"<<endl;
-//    }else if(stick1=='F' && stick2=='F' && stick3=='B' && stick4=='B') {
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 2 steps"<<endl;
-//    }else if(stick1=='F' && stick2=='F' && stick3=='F' && stick4=='B') {
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 3 steps"<<endl;
-
+}
     
     //Output data
     
@@ -164,9 +194,7 @@ int main(int argc, char** argv)  {
 //    //Declare variable to end the game
 //    bool loop=true;
 //    
-//    //Start the Game
-//    cout<<"This is Yut Nori, Korean New Years Game"<<endl;
-//    cout<<"To choose who goes first, play the Rock - Paper - Scissors"<<endl;
+//    
 //    
 //    //Loop the game until over
 //    do{
@@ -228,3 +256,9 @@ int main(int argc, char** argv)  {
 //    return cChoice;
 //} 
 
+        //    cout<<endl<< a5 <<setw(4)<< b5 <<setw(4)<< c5 <<setw(4)<< d5 <<setw(4)<< e5 <<setw(4)<< f5 <<endl;
+//    cout<<endl<< a4 <<setw(4)<< b4 <<setw(4)<< c4 <<setw(4)<< d4 <<setw(4)<< e4 <<setw(4)<< f4 <<endl;
+//    cout<<endl<< a3 <<setw(4)<< b3 <<setw(4)<< c3 <<setw(4)<< d3 <<setw(4)<< e3 <<setw(4)<< f3 <<endl;            
+//    cout<<endl<< a2 <<setw(4)<< b2 <<setw(4)<< c2 <<setw(4)<< d2 <<setw(4)<< e2 <<setw(4)<< f2 <<endl;
+//    cout<<endl<< a1 <<setw(4)<< b1 <<setw(4)<< c1 <<setw(4)<< d1 <<setw(4)<< e1 <<setw(4)<< f1 <<endl;        
+//   
