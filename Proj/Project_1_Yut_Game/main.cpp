@@ -4,7 +4,7 @@
  * Created on January 28, 2018, 1:20 PM
  * Purpose: Project 1 - Yut Nori(Korean New Years Game)
  */
-
+//board?, 2 -3 players?,
 //system Libraries
 #include <iostream> //I/O Library
 #include <cmath>    //Math Library
@@ -25,7 +25,7 @@ using namespace std;
 //void gameRPS();  //Game Function
 
 //Execution Begins Here
-int main(int argc, char** argv) {
+int main(int argc, char** argv)  {    
     //Generate Random Number Seed
     srand(static_cast<unsigned int>(time(0)));
     
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     char comp; //computer
     char user1;//user 1
     char user2;//user 2
-    sticks
+
     //Initialize Variables
     
     //Process/Map inputs to outputs
@@ -94,6 +94,36 @@ int main(int argc, char** argv) {
     cout<<endl<<"Start with g7"<<endl;
     cout<<"Press enter  tothrow the 4 wood sticks"<<endl;
     
+    //Declare Variables
+    int f0,f1,f2,f3,f4,f5;//Frequency of the sum x -> fx
+    int nThrows;
+    
+    //Initialize Variables
+
+    f5=f1=f2=f3=f4=0;
+    nThrows=36000;
+    
+    //Process/Map inputs to outputs
+
+    for(int thrw=1;thrw<=nThrows;thrw++){ 
+        char stick1=rand()%2;//Range [0,1]
+        char stick2=rand()%2;//Range [0,1]
+        char stick3=rand()%2;//Range [0,1]
+        char stick4=rand()%2;//Range [0,1]
+            switch(stick1+stick2+stick3+stick4){
+                case 1: f1++; break;
+                case 2: f2++; break;
+                case 3: f3++; break;
+                case 4: f4++; break;
+                //if (case 4 || case 0)//{
+                    
+                //}
+                case 0: f5++; break;
+                default:cout<<"Error"<<endl;
+            }
+    }
+    return 0;
+}    
 //    cout<<endl<< a5 <<setw(4)<< b5 <<setw(4)<< c5 <<setw(4)<< d5 <<setw(4)<< e5 <<setw(4)<< f5 <<endl;
 //    cout<<endl<< a4 <<setw(4)<< b4 <<setw(4)<< c4 <<setw(4)<< d4 <<setw(4)<< e4 <<setw(4)<< f4 <<endl;
 //    cout<<endl<< a3 <<setw(4)<< b3 <<setw(4)<< c3 <<setw(4)<< d3 <<setw(4)<< e3 <<setw(4)<< f3 <<endl;            
@@ -127,8 +157,8 @@ int main(int argc, char** argv) {
     //Output data
     
     //Exit stage right!
-    return 0;
-}
+//    return 0;
+//}
 //
 //void gameRPS(){
 //    //Declare variable to end the game
