@@ -11,7 +11,8 @@
 #include <iomanip>  //Formatting Library
 #include <cstdlib>  //Random Number Generator
 #include <ctime>    //Time to Seed Random Number
-#include <vector>
+#include <vector>   //Vector Function Library
+#include <fstream>  //File Library
 using namespace std;
 
 //User Libraries
@@ -20,21 +21,30 @@ using namespace std;
 //                   2-D Array Dimensions
 
 //Function Prototypes
+//void read(ifstream &,char[],vector<char> &);
+//
+//void read(fstream &,string,vector<char> &);
+//
+//int  score(vector<char> &,vector<char> &);
+
+void write(ofstream &,string,vector<char> &,vector<char> &);
+void read(fstream &,string,vector<char> &,int);
+void write(ofstream &,string,vector<char> &,vector<char> &,int);
 void showGrid(vector<char> &);
 
 //Execution Begins Here
 int main(int argc, char** argv)  {    
     //Generate Random Number Seed
-    srand(static_cast<unsigned int>(time(0)));
+    srand(static_cast<unsigned int>(time(0)));  //Random Number Generator
     
     //Declare Variables
-    char comput; //computer for rock game
-    char comp; //computer
-    char player;//player
-    char user;//user 1
-    int num;   //Integer Number, but I will range to 0 to 3
-    //char user2;//user 2
-    // unsigned short sticks = 4;
+    char comput; //Computer for Rock-Paper-Scissors game
+    char comp;   //Computer for Yut Nori Game
+    char player; //Player for Rock-Paper-Scissors game
+    char user;   //User for Yut Nori Game
+    int num;     //Integer Number, but I will range to 0 to 3
+    string winner; //File winner name of Rock-Paper-Scissors game  p283
+    unsigned short nsticks = 4;
     //VARIABLES FOR WOOD STICKS GAME
     vector<char> x(7, ' '); // to store 'x' on a current position and a space on other positions
     unsigned short position = 0; // to store curr
@@ -80,9 +90,12 @@ int main(int argc, char** argv)  {
     }else if(comput=='S' && player=='P') {  //When player choose Paper,and computer choose Scissor
         cout<<"The player is lose, so the player goes second"<<endl;
     }
+    
+    
+    
 
-    cout<<"This is the Yut Nori Game Board"<<endl;
-    cout<<"Arriving from a7 to a1 is winning the game"<<endl<<endl;
+    cout<<endl<<"This is the Yut Nori Game Board"<<endl;
+    cout<<"Arriving from Starting position a0 to a6 is winning the game"<<endl<<endl;
     showGrid(x);
     // I WOULD MAKE IT A FUNCTION
 //    cout<<setw(8)<<"a"<<endl;
@@ -140,34 +153,34 @@ int main(int argc, char** argv)  {
     true | false
     true == black
     false = white
-    */
-        
-        
-    bool sticks[4] = {false, false, false, false};
+    */ 
     
-    int count = 0;
-    cout<<"The 4 wood sticks are"; // start displaying a message
-            
-    for( int i = 0; i < 4; i++ ){
-        sticks[i]=rand()%2; // 0 (false) or 1 (true)
-        if( sticks[i] ){
-            //its black
-            count++;        
-            cout << setw(4)<<" black";
-        } else { cout << setw(4)<<" white"; }
-    } cout << endl;
-        //cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-       if(count==0) count=5;
-       cout<<"You will move "<<count<<" steps."<<endl;
-       position+=count; x[position]='x'; 
-            //make x[position]=' '; somewhere after you display it and before you throw sticks again
-       showGrid(x); x[position]=' ';
-       
-       if(count==4 || count==5 ) cout<<"You have bonus to throw the sticks again"<<endl;
-        cout<<"Press enter to throw the 4 wood sticks"<<endl;
-        cin.get();
- 
+    for (int j=0; j < 20; j++){
+        bool sticks[4] = {false, false, false, false};
 
+        int count = 0;
+        cout<<"The 4 wood sticks are :"; // start displaying a message
+
+        for( int i = 0; i < nsticks; i++ ){
+            sticks[i]=rand()%2; // 0 (false) or 1 (true)
+            if( sticks[i] ){
+                //its black
+                count++;        
+                cout << setw(4)<<" black";
+            } else  cout << setw(4)<<" white"; 
+        }    
+            if(count==0) count=5;
+            cout<<endl<<"You will move "<<count<<" steps."<<endl;
+            position+=count; x[position]='x'; 
+                //make x[position]=' '; somewhere after you display it and before you throw sticks again
+            showGrid(x); x[position]=' ';
+
+            if(count==4 || count==5 ) cout<<"You have bonus to throw the sticks again"<<endl;
+            cout<<"Press enter to throw the 4 wood sticks"<<endl;
+            cin.get();
+            cout << endl;    
+    }
+    
     
     
 
@@ -224,15 +237,58 @@ int main(int argc, char** argv)  {
     return 0;
 }
     
+//void write(ofstream &output,string fn,vector<char> &ans,vector<char> &test,int n){
+//    //Open the file for writing
+//    output.open(fn.c_str());
+//   
+//    //Process/Calculations and output the result
+//    int correct=score(ans,test,n);
+//    output<<"Correct Answers = "<<correct
+//            <<" out of "<<n<<endl;
+//    output<<"Percentage score = "
+//            <<100.0f*correct/n<<"%"
+//            <<endl;
+//
+//    //Close the file
+//    output.close();
+//}
 
+void read(fstream & input,string fn,vector<char> &ans,int n){
+    //Open the file
+    input.open(fn.c_str(),ios::in);
 
+    //Read the data from the file
+    for(int i=0;i<n;i++){
+        input>>ans[i];
+        //cout<<ans[i];
+    }
+
+    //Close the file
+    input.close();
+}
+
+void read(ifstream & input,char fn[],vector<char> &ans){
+    //Open the file
+    input.open(fn);
+    
+    //Read the data from the file
+    int i=0;
+    while(input>>ans[i++]);
+
+    //Close the file
+    input.close();
+}
 
 void showGrid(vector<char> &x) {
     cout<<setw(8)<<"a"<<endl;
     cout<<setw(11)<<right<<"0----0"<<endl;
     
-    for(short i=0; i<7; i++) {
+    for(short i=0; i<9; i++) {  // i<7
         cout<<setw(3)<<i<<"  |  "<<x[i]<<" |"<<endl;
+        cout<<setw(11)<<"0----0"<<endl;
+    }
+    for(short i=0; i<21; i++) {  // i<7
+        cout<<setw(3)<<i<<"  |  "<<x[i]<<"  |"<<endl;
         cout<<setw(11)<<"0----0"<<endl;
     }
 }
