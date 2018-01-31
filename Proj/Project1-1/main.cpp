@@ -40,6 +40,7 @@ int main(int argc, char** argv)  {
     //Declare Variables
     char comput; //Computer for Rock-Paper-Scissors game
     char comp;   //Computer for Yut Nori Game
+    char player;
     //string player; //Player for Rock-Paper-Scissors game
     char user;   //User for Yut Nori Game
     int num;     //Integer Number, but I will range to 0 to 3
@@ -49,6 +50,18 @@ int main(int argc, char** argv)  {
     //VARIABLES FOR WOOD STICKS GAME
     vector<char> x(21, ' '); // to store 'x' on a current position and a space on other positions
     unsigned short position = 0; // to store curr
+    
+    //Declare file and game variables
+    ifstream in;               //Input File
+    ofstream out;              //Output File
+    int nGames,wins=0,losses=0;//Number of games, wins/losses
+    
+    //Initialize variables
+    string inName="GameInfo.dat";   //String Name
+    char outName[]="GameStats.dat"; //Character Array Name
+    in.open(inName.c_str());        //Open the Input file
+    out.open(outName);              //Open the Output file
+    while(in>>nGames);//Last value in file becomes the number of games
     
     //Start the Game
     cout<<"This is Yut Nori, Korean New Years Game"<<endl;
@@ -91,7 +104,7 @@ int main(int argc, char** argv)  {
         //output<<player<<
     }else if(comput=='R' && player=='S') {  //When player choose Scissor,and computer choose Rock 
         cout<<"The player is lose, so the player goes second"<<endl;
-        outFile
+//        outFile
     }else if(comput=='P' && player=='S') {  //When player choose Scissor,and computer choose Paper 
         cout<<"The player is win, so the player goes first"<<endl;     
     }else if(comput=='P' && player=='R') {  //When player choose Rock,and computer choose Paper 
@@ -102,69 +115,24 @@ int main(int argc, char** argv)  {
         cout<<"The player is lose, so the player goes second"<<endl;
     }
     
-    
-    
 
     cout<<endl<<"This is the Yut Nori Game Board"<<endl;
     cout<<"Arriving from Starting position a0 to a20 is winning the game"<<endl<<endl;
     showGrid(x);
-    // I WOULD MAKE IT A FUNCTION
-//    cout<<setw(8)<<"a"<<endl;
-//    cout<<setw(11)<<right<<"0----0"<<endl;
-//    
-//    for(short i=0; i<7; i++) {
-//        cout<<setw(3)<<i<<"  |  "<<x[i]<<" |"<<endl;
-//        cout<<setw(11)<<"0----0"<<endl;
-//    } // UNTIL HERE
     
-//    cout<<setw(6)<<"2  |  "<<a2>>"  |"<<endl;
-//    cout<<"     0----0"<<endl;
-//    cout<<setw(6)<<"  3  |    |"<<endl;
-//    cout<<"     0----0"<<endl;
-//    cout<<setw(6)<<"  4  |    |"<<endl;
-//    cout<<"     0----0"<<endl;
-//    cout<<setw(4)<<"  5  |    |"<<endl;
-//    cout<<"     0----0"<<endl;
-//    cout<<setw(4)<<"  6  |    |"<<endl;
-//    cout<<"     0----0"<<endl;
-//    cout<<setw(4)<<"  7  |    |"<<endl;
-//    cout<<"     0----0"<<endl;
-//    
-//    //Declare Variables
-//    int f0,f1,f2,f3,f4,f5;//Frequency of the sum x -> fx
-//    int nThrows;
-//    
-//    //Initialize Variables
-//    f5=f1=f2=f3=f4=0;
-//    nThrows=36000;
-//    
-//    //Process/Map inputs to outputs
-//    for(int thrw=1;thrw<=nThrows;thrw++){ 
-//        char stick1=rand()%2;//Range [0,1]
-//        char stick2=rand()%2;//Range [0,1]
-//        char stick3=rand()%2;//Range [0,1]
-//        char stick4=rand()%2;//Range [0,1]
-//            switch(stick1+stick2+stick3+stick4){
-//                case 1: f1++; break;
-//                case 2: f2++; break;
-//                case 3: f3++; break;
-//                case 4: f4++; break;
-//                //if (case 4 || case 0)//{
-//                    
-//                //}
-//                case 0: f5++; break;
-//                default:cout<<"Error"<<endl;
-//            }
-//    }
-   
-         
-    cout<<"Press enter to throw the 4 wood sticks"<<endl;
-    cin.get();  //Enter to move on
+    string who;
+    char mark;
+    who=(player%2)?"user":"computer";
+    cout<<"Press enter to throw the 4 wood sticks : ";
+    cin.get();
+    //cin>>choice;
+    mark=(user==1)?'X':'O';
     /*
     true | false
     true == black
     false = white
     */ 
+    cout<<"User1(X),Computer(O)"<<endl;
     for (int j=0; j < nsteps; j++){
         bool sticks[4] = {false, false, false, false};
 
@@ -180,107 +148,57 @@ int main(int argc, char** argv)  {
             } else  cout << setw(4)<<" white"; 
         }    
             if(count==0) count=5;
-            cout<<endl<<"You will move "<<count<<" steps."<<endl;
-            position+=count; x[position]='x'; 
+            cout<<endl<<who<<" will move "<<count<<" steps."<<endl;
+            position+=count; x[position]=mark; //'x';
+            position+=count; o[position]=mark;
                 //make x[position]=' '; somewhere after you display it and before you throw sticks again
             showGrid(x); x[position]=' ';
+            showGrid(o); o[position]=' ';
             if(position >= nsteps){
-                cout<<"Congraulation! You arrived at the Final position"<<endl;
-                return 0;        
+                cout<<"Congraulation! "<<who<<" arrived at the Final position"<<endl;
+                //return 0;        
             }
 
-            if(count==4 || count==5 ) cout<<"You have bonus to throw the sticks again"<<endl;
+            if(count==4 || count==5 ) cout<<who<<" has/have bonus to throw the sticks again"<<endl;
             cout<<"Press enter to throw the 4 wood sticks"<<endl;
             cin.get();
             cout << endl;    
     }
     
     
-    cout<<"Computer throws the 4 wood sticks"<<endl;
-    //cin.get();  //Enter to move on
-    /*
-    true | false
-    true == black
-    false = white
-    */ 
-    for (int j=0; j < nsteps; j++){
-        bool sticks[4] = {false, false, false, false};
-
-        int count = 0;
-        cout<<"The 4 wood sticks are :"; // start displaying a message
-
-        for( int i = 0; i < 4; i++ ){
-            sticks[i]=rand()%2; // 0 (false) or 1 (true)
-            if( sticks[i] ){
-                //its black
-                count++;        
-                cout << setw(4)<<" black";
-            } else  cout << setw(4)<<" white"; 
-        }    
-            if(count==0) count=5;
-            cout<<endl<<"Computer will move "<<count<<" steps."<<endl;
-            position+=count; x[position]='O'; 
-                //make x[position]=' '; somewhere after you display it and before you throw sticks again
-            showGrid(x); x[position]=' ';
-            if(position >= nsteps){
-                cout<<"Computer arrived at the Final position first. You lost the game."<<endl;
-                return 0;        
-            }
-
-            if(count==4 || count==5 ) cout<<"Computer has bonus to throw the sticks again"<<endl;
-            //cout<<"Press enter to throw the 4 wood sticks"<<endl;
-            //cin.get();
-            cout << endl;    
-    }
-    
-    
-    
-
-
-
-//    bool sticks[4] = {true, true, true, true};
-//    int count = 0;
-//    for( int i = 0; i < 4; i++ ){
-//        if( sticks[i] ){
-//            //its black
-//            count++;
-//        }
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 4 steps, and you have bonus to throw the sticks again"<<endl;
+//    int time=0;
+//    while (++time<nsteps){
 //        cout<<"Press enter to throw the 4 wood sticks"<<endl;
-//    }
-//    bool sticks[4] = {true, false, false, false};
-//    int count = 0;
-//    for( int i = 0; i < 4; i++ ){
-//        if( sticks[i] ){
-//            //its black
-//            count++;
-//        }
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 1 step"<<endl;
-//    }
-//    bool sticks[4] = {true, true, false, false};
-//    int count = 0;
-//    for( int i = 0; i < 4; i++ ){
-//        if( sticks[i] ){
-//            //its black
-//            count++;
-//        }
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 2 steps"<<endl;
-//    }
-//    bool sticks[4] = {true, true, true, false};
-//    int count = 0;
-//    for( int i = 0; i < 4; i++ ){
-//        if( sticks[i] ){
-//            //its black
-//            count++;
-//        }
-//        cout<<cout<<"The 4 wood sticks are "<<stick1<<setw(4)<<stick2<<setw(4)<<stick3<<setw(4)<<stick4<<endl;
-//        cout<<"You will move 3 steps"<<endl;
-//    }
-
+//        cin.get();  //Enter to move on
+        
     
+    //Output the game statistics to the screen
+    cout<<fixed<<setprecision(2)<<showpoint;
+    cout<<"The winner = "<<winner<<endl;  //file the winner
+    cout<<"Total number of Games = "<<nGames<<endl;
+    cout<<"Number of games won   = "<<wins<<endl;
+    cout<<"Number of games lost  = "<<losses<<endl;
+    cout<<"Total wins and losses = "<<wins+losses<<endl;
+    cout<<"Percentage wins       = "
+            <<static_cast<float>(wins)/nGames*100.0f<<"%"<<endl;
+    cout<<"Percentage losses     = "
+            <<static_cast<float>(losses)/nGames*100.0f<<"%"<<endl;
+
+    //Output the game statistics to a file
+    out<<fixed<<setprecision(2)<<showpoint;
+    cout<<"The winner = "<<winner<<endl;
+    out<<"Total number of Games = "<<nGames<<endl;
+    out<<"Number of games won   = "<<wins<<endl;
+    out<<"Number of games lost  = "<<losses<<endl;
+    out<<"Total wins and losses = "<<wins+losses<<endl;
+    out<<"Percentage wins       = "
+            <<static_cast<float>(wins)/nGames*100.0f<<"%"<<endl;
+    out<<"Percentage losses     = "
+            <<static_cast<float>(losses)/nGames*100.0f<<"%"<<endl;
+
+    //Close Files and Exit stage right!
+    in.close();
+    out.close();
  
     
     
