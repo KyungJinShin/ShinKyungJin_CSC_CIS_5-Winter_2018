@@ -40,17 +40,26 @@ int main(int argc, char** argv)  {
     //Declare Variables
     char comput; //Computer for Rock-Paper-Scissors game
     char comp;   //Computer for Yut Nori Game
-    char player; //Player for Rock-Paper-Scissors game
+    //string player; //Player for Rock-Paper-Scissors game
     char user;   //User for Yut Nori Game
     int num;     //Integer Number, but I will range to 0 to 3
     string winner; //File winner name of Rock-Paper-Scissors game  p283
-    unsigned short nsticks = 4;
+    unsigned short nsteps = 21;
+    //unsigned short nsticks = 4;
     //VARIABLES FOR WOOD STICKS GAME
-    vector<char> x(7, ' '); // to store 'x' on a current position and a space on other positions
+    vector<char> x(21, ' '); // to store 'x' on a current position and a space on other positions
     unsigned short position = 0; // to store curr
     
     //Start the Game
     cout<<"This is Yut Nori, Korean New Years Game"<<endl;
+//    ofstream outFlie; //outputFile
+//    string player;
+//    //Open an output file.
+//    output.open("username.dat"); //outputFile
+//    //Get the username of the player
+//    cout<<"Input your user name for this game"<<endl;
+//    cin>>player;
+    
     cout<<"To choose who goes first, play the Rock - Paper - Scissors"<<endl;
     
     //Rock - Paper - Scissors Game  
@@ -78,9 +87,11 @@ int main(int argc, char** argv)  {
         }while(comput==player);
     }
     if(comput=='R' && player=='P') {  //When player choose Paper,and computer choose Rock 
-        cout<<"The player is win, so the player goes first"<<endl;    
+        cout<<"The player is win, so the player goes first"<<endl;
+        //output<<player<<
     }else if(comput=='R' && player=='S') {  //When player choose Scissor,and computer choose Rock 
         cout<<"The player is lose, so the player goes second"<<endl;
+        outFile
     }else if(comput=='P' && player=='S') {  //When player choose Scissor,and computer choose Paper 
         cout<<"The player is win, so the player goes first"<<endl;     
     }else if(comput=='P' && player=='R') {  //When player choose Rock,and computer choose Paper 
@@ -95,7 +106,7 @@ int main(int argc, char** argv)  {
     
 
     cout<<endl<<"This is the Yut Nori Game Board"<<endl;
-    cout<<"Arriving from Starting position a0 to a6 is winning the game"<<endl<<endl;
+    cout<<"Arriving from Starting position a0 to a20 is winning the game"<<endl<<endl;
     showGrid(x);
     // I WOULD MAKE IT A FUNCTION
 //    cout<<setw(8)<<"a"<<endl;
@@ -148,20 +159,19 @@ int main(int argc, char** argv)  {
    
          
     cout<<"Press enter to throw the 4 wood sticks"<<endl;
-    cin.get();
+    cin.get();  //Enter to move on
     /*
     true | false
     true == black
     false = white
     */ 
-    
-    for (int j=0; j < 20; j++){
+    for (int j=0; j < nsteps; j++){
         bool sticks[4] = {false, false, false, false};
 
         int count = 0;
         cout<<"The 4 wood sticks are :"; // start displaying a message
 
-        for( int i = 0; i < nsticks; i++ ){
+        for( int i = 0; i < 4; i++ ){
             sticks[i]=rand()%2; // 0 (false) or 1 (true)
             if( sticks[i] ){
                 //its black
@@ -174,10 +184,52 @@ int main(int argc, char** argv)  {
             position+=count; x[position]='x'; 
                 //make x[position]=' '; somewhere after you display it and before you throw sticks again
             showGrid(x); x[position]=' ';
+            if(position >= nsteps){
+                cout<<"Congraulation! You arrived at the Final position"<<endl;
+                return 0;        
+            }
 
             if(count==4 || count==5 ) cout<<"You have bonus to throw the sticks again"<<endl;
             cout<<"Press enter to throw the 4 wood sticks"<<endl;
             cin.get();
+            cout << endl;    
+    }
+    
+    
+    cout<<"Computer throws the 4 wood sticks"<<endl;
+    //cin.get();  //Enter to move on
+    /*
+    true | false
+    true == black
+    false = white
+    */ 
+    for (int j=0; j < nsteps; j++){
+        bool sticks[4] = {false, false, false, false};
+
+        int count = 0;
+        cout<<"The 4 wood sticks are :"; // start displaying a message
+
+        for( int i = 0; i < 4; i++ ){
+            sticks[i]=rand()%2; // 0 (false) or 1 (true)
+            if( sticks[i] ){
+                //its black
+                count++;        
+                cout << setw(4)<<" black";
+            } else  cout << setw(4)<<" white"; 
+        }    
+            if(count==0) count=5;
+            cout<<endl<<"Computer will move "<<count<<" steps."<<endl;
+            position+=count; x[position]='O'; 
+                //make x[position]=' '; somewhere after you display it and before you throw sticks again
+            showGrid(x); x[position]=' ';
+            if(position >= nsteps){
+                cout<<"Computer arrived at the Final position first. You lost the game."<<endl;
+                return 0;        
+            }
+
+            if(count==4 || count==5 ) cout<<"Computer has bonus to throw the sticks again"<<endl;
+            //cout<<"Press enter to throw the 4 wood sticks"<<endl;
+            //cin.get();
             cout << endl;    
     }
     
@@ -283,12 +335,12 @@ void showGrid(vector<char> &x) {
     cout<<setw(8)<<"a"<<endl;
     cout<<setw(11)<<right<<"0----0"<<endl;
     
-    for(short i=0; i<9; i++) {  // i<7
+    for(short i=0; i<7; i++) {  // i<7
         cout<<setw(3)<<i<<"  |  "<<x[i]<<" |"<<endl;
         cout<<setw(11)<<"0----0"<<endl;
     }
-    for(short i=0; i<21; i++) {  // i<7
-        cout<<setw(3)<<i<<"  |  "<<x[i]<<"  |"<<endl;
+    for(short i=7; i<21; i++) {  // i<7
+        cout<<setw(3)<<i<<"  |  "<<x[i]<<" |"<<endl;
         cout<<setw(11)<<"0----0"<<endl;
     }
 }
