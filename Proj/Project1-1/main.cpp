@@ -45,7 +45,7 @@ int main(int argc, char** argv)  {
     short comp=0;   //Computer for Yut Nori Game
     
     int num;     //Integer Number, but I will range to 0 to 3
-    string winner; //File winner name of Rock-Paper-Scissors game  p283
+    //string winner; //File winner name of Rock-Paper-Scissors game  p283
     //unsigned short nsteps = 21;
     //unsigned short nsticks = 4;
     //VARIABLES FOR WOOD STICKS GAME
@@ -53,16 +53,19 @@ int main(int argc, char** argv)  {
     vector<char> y(21, ' '); // to store 'o' on a current position and a space on other positions
     
     //Declare file and game variables
-    ifstream in;               //Input File
-    ofstream out;              //Output File
-    int nGames,wins=0,losses=0;//Number of games, wins/losses
+    //ifstream in;               //Input File
+    //ofstream out;              //Output File
+    //int nGames,wins=0,losses=0;//Number of games, wins/losses
+    string winner;
+    fstream dataFile;
+    dataFile.open("winner.txt", ios::out);
     
     //Initialize variables
-    string inName="GameInfo.dat";   //String Name
-    char outName[]="GameStats.dat"; //Character Array Name
-    in.open(inName.c_str());        //Open the Input file
-    out.open(outName);              //Open the Output file
-    while(in>>nGames);//Last value in file becomes the number of games
+    string inName="GameInfo.txt";   //String Name
+    char outName[]="GameStats.txt"; //Character Array Name
+    //in.open(inName.c_str());        //Open the Input file
+    //out.open(outName);              //Open the Output file
+    //while(in>>nGames);//Last value in file becomes the number of games
     
     //Start the Game
     cout<<"This is Yut Nori, Korean New Years Game"<<endl;
@@ -80,11 +83,18 @@ int main(int argc, char** argv)  {
     //Initialize Variables
     num=rand()%3; // number of 0 to 2
     
-    if (num==0)      comput='R';  //When number=0, computer is Rock 
-    else if (num==1) comput='S';  //When number=1, computer is Scissor
-    else  comput='P';  //When number=2, computer is Paper -> if (num==2)
+    switch(num){
+        case 0: comput='R'; break;
+        case 1: comput='S'; break;
+        case 2: comput='P'; break;
+    }
     cout<<"What is your choice between rock as R, paper as P, and scissor as S ?"<<endl;
     cin>>player;
+     
+//    if (num==0)      comput='R';  //When number=0, computer is Rock 
+//    else if (num==1) comput='S';  //When number=1, computer is Scissor
+//    else  comput='P';  //When number=2, computer is Paper -> if (num==2)
+
     
     //Process/Map inputs to outputs
     cout<<"The player plays "<<player<<endl;
@@ -121,6 +131,14 @@ int main(int argc, char** argv)  {
     cout<<endl<<"This is the Yut Nori Game Board"<<endl;
     cout<<"Arriving from Starting position (a 0) to (a 20) is winning the game"<<endl<<endl;
     showGrid(x,y);  //showGrid(y);
+    float max,a,b,c,d,e;
+    a=10; 
+    b=12;
+    c=3;
+    d=40;
+    e=15;
+    max=fmax(a,b); 
+    cout<<"You can go maximum "<<max<<" steps for throwing the 4 wood sticks each time"<<endl;
     
     comp=0;
     user=0;
@@ -186,51 +204,67 @@ int main(int argc, char** argv)  {
                 }    
                     
             }while(count==4 || count==5);
-  
+            
         if (user>=nsteps){
-            cout<<"Congraulation! User(x) won!"<<endl;   
+            cout<<"Congraulation! User(x) won!"<<endl;
+//            ofstream outputFile;
+//            outputFile.open("winner.txt");
+            //dataFile.open("winner.txt", ios::in | ios::out);
+            dataFile<<"User"<<endl;
         }else if (comp>=nsteps){
             cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
+//            ofstream outputFile;
+//            outputFile.open("winner.txt");
+            dataFile<<"Computer"<<endl;
+            //dataFile.close();
         }
     }while(!(comp>=nsteps) && !(user>=nsteps)); //== while(!(comp>=nsteps) || !(user>=nsteps))  = while(comp<nsteps || user<nsteps)
     
+    
+    //Output the game statistics to the screen
+    cout<<fixed<<setprecision(2)<<showpoint;
+    dataFile.close();
+    
+    dataFile.open("winner.txt", ios::in);
+    if (dataFile>>winner){
+       cout<<"The winner = "<<winner<<endl;  //file the winner 
+    }
+    //cout<<"Total number of Games = "<<nGames<<endl;
+    cout<<"Number of user moved  = "<<user<<endl;
+    cout<<"Number of compputer moved  = "<<comp<<endl;
+    cout<<"Total wins and losses /+   = "<<user+comp<<endl;
+    cout<<"Percentage wins    /user   = "
+            <<static_cast<float>(user)/nsteps*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
+    cout<<"Percentage losses  /comp   = "
+            <<static_cast<float>(comp)/nsteps*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
+
+    //Output the game statistics to a file
+    cout<<fixed<<setprecision(2)<<showpoint;
+    if (dataFile>>winner){
+       cout<<"The winner = "<<winner<<endl;  //file the winner 
+    }
+    //cout<<"The winner = "<<dataFile"winner.txt"<<endl;  //file the winner
+    //out<<"Total number of Games = "<<nGames<<endl;
+    //out<<"Number of games won /user  = "<<user<<endl;
+    //out<<"Number of games lost/comp  = "<<comp<<endl;
+    //out<<"Total wins and losses /+   = "<<user+comp<<endl;
+    //out<<"Percentage wins    /user   = "
+     //       <<static_cast<float>(user)/nsteps*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
+    //out<<"Percentage losses  /comp   = "
+      //      <<static_cast<float>(comp)/nsteps*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
+
+    //Close Files and Exit stage right!
+    dataFile.close();
+ 
+    
+    
+    
+    
+
     return 0;
 }
     
-//    //Output the game statistics to the screen
-//    cout<<fixed<<setprecision(2)<<showpoint;
-//    cout<<"The winner = "<<winner<<endl;  //file the winner
-//    cout<<"Total number of Games = "<<nGames<<endl;
-//    cout<<"Number of games won   = "<<wins<<endl;
-//    cout<<"Number of games lost  = "<<losses<<endl;
-//    cout<<"Total wins and losses = "<<wins+losses<<endl;
-//    cout<<"Percentage wins       = "
-//            <<static_cast<float>(wins)/nGames*100.0f<<"%"<<endl;
-//    cout<<"Percentage losses     = "
-//            <<static_cast<float>(losses)/nGames*100.0f<<"%"<<endl;
-//
-//    //Output the game statistics to a file
-//    out<<fixed<<setprecision(2)<<showpoint;
-//    cout<<"The winner = "<<winner<<endl;
-//    out<<"Total number of Games = "<<nGames<<endl;
-//    out<<"Number of games won   = "<<wins<<endl;
-//    out<<"Number of games lost  = "<<losses<<endl;
-//    out<<"Total wins and losses = "<<wins+losses<<endl;
-//    out<<"Percentage wins       = "
-//            <<static_cast<float>(wins)/nGames*100.0f<<"%"<<endl;
-//    out<<"Percentage losses     = "
-//            <<static_cast<float>(losses)/nGames*100.0f<<"%"<<endl;
-//
-//    //Close Files and Exit stage right!
-//    in.close();
-//    out.close();
-// 
-//    
-//    
-//    
-//    
-//    return 0;
-//}
+
     
 //void write(ofstream &output,string fn,vector<char> &ans,vector<char> &test,int n){
 //    //Open the file for writing

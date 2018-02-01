@@ -1,0 +1,6 @@
+Total number of Games = -2145873414
+Number of games won /user  = 22
+Number of games lost/comp  = 18
+Total wins and losses /+   = 40
+Percentage wins    /user   = 104.762%
+Percentage losses  /comp   = 85.7143%
