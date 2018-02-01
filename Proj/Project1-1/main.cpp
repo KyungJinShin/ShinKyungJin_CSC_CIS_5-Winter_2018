@@ -4,7 +4,6 @@
  * Created on January 28, 2018, 1:20 PM
  * Purpose: Project 1 - Yut Nori(Korean New Years Game)
  */
-//board?, 2 -3 players?,
 //system Libraries
 #include <iostream> //I/O Library
 #include <cmath>    //Math Library
@@ -40,7 +39,6 @@ int main(int argc, char** argv)  {
     
     //Declare Variables
     char comput; //Computer for Rock-Paper-Scissors game
-    
     char player;
     //string player; //Player for Rock-Paper-Scissors game
     short user=0;   //User for Yut Nori Game
@@ -128,9 +126,6 @@ int main(int argc, char** argv)  {
     user=0;
     int count=0;
     int nsteps = 21;
-    //who=(player%2)?"user":"computer";
-    //cin>>choice;
-    //mark=(user==1)?'X':'O';
     /*
     true | false
     true == black
@@ -141,66 +136,60 @@ int main(int argc, char** argv)  {
         //Player goes first
         cout<<"Press enter to throw the 4 wood sticks : ";
         cin.get();
-        //for (int j=0; j<nsteps; j++){
         do {
             count = throwStick(); x[user]=' ';
             user += count;
-            cout<<endl<<"User will move "<<count<<" steps."<<endl;
+            cout<<endl<<"User(x) will move "<<count<<" steps."<<endl;
             //Print the User's Grid
-            //if //(count==0) count=5;
-            x[user]='x'; //'x'; =mark; //positoin+=count;
+            x[user]='x'; //'x'mark; //positoin+=count;
                         //make x[position]=' '; somewhere after you display it and before you throw sticks again
             showGrid(x,y); 
-            // if (user>=nsteps){  cout<<"Congraulation! User won!"<<endl;
-            if (count==4 || count==5 ) cout<<"User has bonus to throw the sticks again"<<endl;
+            if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;
+                    
+            if (user==comp){
+                y[comp]=' ';
+                count=0;
+                comp=0;
+                //comp += count;
+                cout<<"User(x) catched the computer's piece(y). Computer piece(y) go back to starting position a0"<<endl;
+                showGrid(x,y);
+                y[comp]='y';
+                cout<<endl;
+            }
+
         }while(count==4 || count==5);
         
         
-            cout<<"And now Computer's turn..."<<endl<<endl;
+            cout<<"And now Computer's(y) turn..."<<endl<<endl;
             do{
-                    count = throwStick(); y[comp]=' ';
-                     //Print the User's Grid
-                    if (count==0) count=5;
-                        cout<<endl<<"Computer will move "<<count<<" steps."<<endl;
-                        comp+=count; y[comp]='y'; //'x'; //position+=count;
-                            //make x[position]=' '; somewhere after you display it and before you throw sticks again
-                        showGrid(x,y);  
-                      if (count==4 || count==5 ) cout<<"Computer has bonus to throw the sticks again"<<endl;
+                count = throwStick(); y[comp]=' ';
+                //Print the Computer's Grid
+                if (count==0) count=5;
+                    cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl;
+                    comp+=count; y[comp]='y'; //'y' mark; //position+=count;
+                        //make y[position]=' '; somewhere after you display it and before you throw sticks again
+                    showGrid(x,y);  
+                if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;
+                
+                if (comp==user){
+                    x[comp]=' ';
+                    count=0;
+                    user=0;
+                    //user += count;
+                    cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position a0"<<endl;
+                    showGrid(x,y); 
+                    x[user]='x';
+                    cout<<endl;
+                }    
+                    
             }while(count==4 || count==5);
-          
+  
         if (user>=nsteps){
-            cout<<"Congraulation! User won!"<<endl;   
+            cout<<"Congraulation! User(x) won!"<<endl;   
+        }else if (comp>=nsteps){
+            cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
         }
-//                    //Computer goes 
-//            count = throwStick();
-//            comp += count;
-//            
-//             //Print the User's Grid
-//            if (count==0) count=5;
-//                cout<<endl<<"Computer will move "<<count<<" steps."<<endl;
-//                comp+=count; y[comp]='y'; //'x'; //position+=count;
-//                    //make x[position]=' '; somewhere after you display it and before you throw sticks again
-//                showGrid(x,y); y[comp]=' ';
-//
-//                    if (count==4 || count==5 ) cout<<"Computer has bonus to throw the sticks again"<<endl;
-//                        cout<<endl;
-//                        do{
-//                            count = throwStick();
-//                            comp += count;
-//
-//                             //Print the User's Grid
-//                            if (count==0) count=5;
-//                                cout<<endl<<"Computer will move "<<count<<" steps."<<endl;
-//                                comp+=count; y[comp]='y'; //'x'; //position+=count;
-//                                    //make x[position]=' '; somewhere after you display it and before you throw sticks again
-//                                showGrid2(y); y[comp]=' '; 
-//                            
-//                        }while(count!=4 || count!=5);
-//                
-            else if (comp>=nsteps){
-                cout<<"Sorry. Computer has won. User lost"<<endl;
-            }
-    }while(comp<nsteps || user<nsteps);
+    }while(!(comp>=nsteps) && !(user>=nsteps)); //== while(!(comp>=nsteps) || !(user>=nsteps))  = while(comp<nsteps || user<nsteps)
     
     return 0;
 }
@@ -311,8 +300,7 @@ int throwStick() {
             } else  cout << "white"; 
      }
     if (count==0) count=5; 
-    
-    
+
     cout<<endl;
        
     return count;
@@ -322,8 +310,16 @@ void showGrid(vector<char> &x, vector<char> &y) {
     cout<<setw(10)<<"a"<<endl;
     cout<<setw(13)<<right<<"0------0"<<endl;
     
-    for(short i=0; i<21; i++) {  // i<7
-        cout<<setw(3)<<i<<" | "<<x[i]<<" "<<y[i]<<"   |"<<endl;
+    for(short i=0; i<1; i++) {  // i<7
+        cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |  START"<<endl;
+        cout<<setw(13)<<"0------0"<<endl;
+    }
+    for(short i=1; i<20; i++) {  // i<7
+        cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |"<<endl;
+        cout<<setw(13)<<"0------0"<<endl;
+    }
+    for(short i=20; i<21; i++) {  // i<7
+        cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |  END"<<endl;
         cout<<setw(13)<<"0------0"<<endl;
     }
 }
