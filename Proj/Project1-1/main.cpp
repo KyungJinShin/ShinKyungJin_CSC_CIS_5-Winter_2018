@@ -310,7 +310,7 @@ void showGrid(vector<char> &x, vector<char> &y) {
     cout<<setw(10)<<"a"<<endl;
     cout<<setw(13)<<right<<"0------0"<<endl;
     
-    for(short i=0; i<1; i++) {  // i<7
+    for(short i=-1; i<1; i++) {  // i<7
         cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |  START"<<endl;
         cout<<setw(13)<<"0------0"<<endl;
     }
