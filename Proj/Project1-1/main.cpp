@@ -119,7 +119,7 @@ int main(int argc, char** argv)  {
     /*------------------------Yut Nori Game---------------------------------------------------------------*/
     
     cout<<endl<<"This is the Yut Nori Game Board"<<endl;
-    cout<<"Arriving from Starting position a0 to a20 is winning the game"<<endl<<endl;
+    cout<<"Arriving from Starting position (a 0) to (a 20) is winning the game"<<endl<<endl;
     showGrid(x,y);  //showGrid(y);
     
     comp=0;
@@ -144,18 +144,20 @@ int main(int argc, char** argv)  {
             x[user]='x'; //'x'mark; //positoin+=count;
                         //make x[position]=' '; somewhere after you display it and before you throw sticks again
             showGrid(x,y); 
-            if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;
                     
             if (user==comp){
                 y[comp]=' ';
                 count=0;
                 comp=0;
                 //comp += count;
-                cout<<"User(x) catched the computer's piece(y). Computer piece(y) go back to starting position a0"<<endl;
+                cout<<"User(x) catched the computer's piece(y). Computer piece(y) go back to starting position (a 0)"<<endl;
                 showGrid(x,y);
                 y[comp]='y';
                 cout<<endl;
+            
+            if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;    
             }
+            
 
         }while(count==4 || count==5);
         
@@ -169,17 +171,18 @@ int main(int argc, char** argv)  {
                     comp+=count; y[comp]='y'; //'y' mark; //position+=count;
                         //make y[position]=' '; somewhere after you display it and before you throw sticks again
                     showGrid(x,y);  
-                if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;
                 
                 if (comp==user){
                     x[comp]=' ';
                     count=0;
                     user=0;
                     //user += count;
-                    cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position a0"<<endl;
+                    cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position (a 0)"<<endl;
                     showGrid(x,y); 
                     x[user]='x';
                     cout<<endl;
+                    
+                if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;   
                 }    
                     
             }while(count==4 || count==5);
@@ -193,20 +196,6 @@ int main(int argc, char** argv)  {
     
     return 0;
 }
-        
-            
-//            //showGrid(o); o[position]=' ';
-//            if(position >= nsteps){
-//                cout<<
-//                return 0;        
-//            }
-    
-    
-//    int time=0;
-//    while (++time<nsteps){
-//        cout<<"Press enter to throw the 4 wood sticks"<<endl;
-//        cin.get();  //Enter to move on
-        
     
 //    //Output the game statistics to the screen
 //    cout<<fixed<<setprecision(2)<<showpoint;
@@ -310,7 +299,7 @@ void showGrid(vector<char> &x, vector<char> &y) {
     cout<<setw(10)<<"a"<<endl;
     cout<<setw(13)<<right<<"0------0"<<endl;
     
-    for(short i=-1; i<1; i++) {  // i<7
+    for(short i=0; i<1; i++) {  // i<7
         cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |  START"<<endl;
         cout<<setw(13)<<"0------0"<<endl;
     }
@@ -319,7 +308,8 @@ void showGrid(vector<char> &x, vector<char> &y) {
         cout<<setw(13)<<"0------0"<<endl;
     }
     for(short i=20; i<21; i++) {  // i<7
-        cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |  END"<<endl;
+        cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |"<<endl;
         cout<<setw(13)<<"0------0"<<endl;
+        cout<<setw(13)<<"   END  "<<endl;
     }
 }
