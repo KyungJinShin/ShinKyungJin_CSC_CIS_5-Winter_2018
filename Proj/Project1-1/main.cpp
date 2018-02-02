@@ -20,15 +20,6 @@ using namespace std;
 //                   2-D Array Dimensions
 
 //Function Prototypes
-//void read(ifstream &,char[],vector<char> &);
-//
-//void read(fstream &,string,vector<char> &);
-//
-//int  score(vector<char> &,vector<char> &);
-void write(ofstream &,string,vector<char> &,vector<char> &);
-void read(fstream &,string,vector<char> &,int);
-void write(ofstream &,string,vector<char> &,vector<char> &,int);
-
 void showGrid(vector<char> &, vector<char> &);
 int throwStick();
 
@@ -45,6 +36,7 @@ int main(int argc, char** argv)  {
     short comp=0;   //Computer for Yut Nori Game
     
     int num;     //Integer Number, but I will range to 0 to 3
+    string winner;
     //string winner; //File winner name of Rock-Paper-Scissors game  p283
     //unsigned short nsteps = 21;
     //unsigned short nsticks = 4;
@@ -53,18 +45,23 @@ int main(int argc, char** argv)  {
     vector<char> y(21, ' '); // to store 'o' on a current position and a space on other positions
     
     //Declare file and game variables
-    //ifstream in;               //Input File
-    //ofstream out;              //Output File
-    //int nGames,wins=0,losses=0;//Number of games, wins/losses
-    string winner;
+    ifstream in;               //Input File
+    ofstream out;              //Output File
+    
     fstream dataFile;
     dataFile.open("winner.txt", ios::out);
     
     //Initialize variables
-    string inName="GameInfo.txt";   //String Name
-    char outName[]="GameStats.txt"; //Character Array Name
-    //in.open(inName.c_str());        //Open the Input file
-    //out.open(outName);              //Open the Output file
+    string inName="GameInfo.dat";   //String Name
+    char outName[]="GameStats.dat"; //Character Array Name
+    in.open(inName.c_str());        //Open the Input file
+    out.open(outName);              //Open the Output file
+    
+//    string inName="GameInfo.txt";   //String Name
+//    char outName[]="GameStats.txt"; //Character Array Name
+//    int outName[]="GameStats.txt"; //Character Array Name
+//    in.open(inName.c_str());        //Open the Input file
+//    out.open(outName);              //Open the Output file
     //while(in>>nGames);//Last value in file becomes the number of games
     
     //Start the Game
@@ -88,13 +85,13 @@ int main(int argc, char** argv)  {
         case 1: comput='S'; break;
         case 2: comput='P'; break;
     }
-    cout<<"What is your choice between rock as R, paper as P, and scissor as S ?"<<endl;
-    cin>>player;
-     
-//    if (num==0)      comput='R';  //When number=0, computer is Rock 
-//    else if (num==1) comput='S';  //When number=1, computer is Scissor
-//    else  comput='P';  //When number=2, computer is Paper -> if (num==2)
-
+//    cout<<"What is your choice between rock as R, paper as P, and scissor as S ?"<<endl;
+//    cin>>player;
+    while(player!='R' && player!='S' && player!='P') {
+        cout<<"What is your choice between rock as R, paper as P, and scissor as S ?"<<endl;
+        cout<<"Input only upper case of R, P, and S"<<endl;
+        cin>>player;     //If you input other than upper case of R,S,P, you have to try again. 
+    }
     
     //Process/Map inputs to outputs
     cout<<"The player plays "<<player<<endl;
@@ -130,16 +127,16 @@ int main(int argc, char** argv)  {
     
     cout<<endl<<"This is the Yut Nori Game Board"<<endl;
     cout<<"Arriving from Starting position (a 0) to (a 20) is winning the game"<<endl<<endl;
-    showGrid(x,y);  //showGrid(y);
-    float max,a,b,c,d,e;
-    a=10; 
-    b=12;
-    c=3;
-    d=40;
-    e=15;
-    max=fmax(a,b); 
-    cout<<"You can go maximum "<<max<<" steps for throwing the 4 wood sticks each time"<<endl;
-    
+//    showGrid(x,y);  //showGrid(y);
+//    float max,a,b,c,d,e;
+//    a=10; 
+//    b=12;
+//    c=3;
+//    d=40;
+//    e=15;
+//    max=fmax(a,b); 
+//    cout<<"You can go maximum "<<max<<" steps for throwing the 4 wood sticks each time"<<endl;
+//    
     comp=0;
     user=0;
     int count=0;
@@ -207,16 +204,10 @@ int main(int argc, char** argv)  {
             
         if (user>=nsteps){
             cout<<"Congraulation! User(x) won!"<<endl;
-//            ofstream outputFile;
-//            outputFile.open("winner.txt");
-            //dataFile.open("winner.txt", ios::in | ios::out);
             dataFile<<"User"<<endl;
         }else if (comp>=nsteps){
             cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
-//            ofstream outputFile;
-//            outputFile.open("winner.txt");
             dataFile<<"Computer"<<endl;
-            //dataFile.close();
         }
     }while(!(comp>=nsteps) && !(user>=nsteps)); //== while(!(comp>=nsteps) || !(user>=nsteps))  = while(comp<nsteps || user<nsteps)
     
@@ -229,84 +220,54 @@ int main(int argc, char** argv)  {
     if (dataFile>>winner){
        cout<<"The winner = "<<winner<<endl;  //file the winner 
     }
-    //cout<<"Total number of Games = "<<nGames<<endl;
+    unsigned short a,b,c;
+    a=0.25;  //1/4;
+    b=0.375;  //3/8;
+    c=0.0625;  //1/16;
+    cout<<"Last game of winner = "<<winner<<endl;
+    cout<<"When you throw the 4 sticks, "<<endl;
     cout<<"Number of user moved  = "<<user<<endl;
     cout<<"Number of compputer moved  = "<<comp<<endl;
     cout<<"Total wins and losses /+   = "<<user+comp<<endl;
-    cout<<"Percentage wins    /user   = "
-            <<static_cast<float>(user)/nsteps*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
-    cout<<"Percentage losses  /comp   = "
-            <<static_cast<float>(comp)/nsteps*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
-
+    cout<<"Percentage to get 1 black and 3 white = "
+            <<static_cast<float>(a)*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
+    cout<<"Percentage to get 2 black and 2 white = "
+            <<static_cast<float>(b)*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
+    cout<<"Percentage to get 3 black and 1 white = "
+            <<static_cast<float>(a)*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
+    cout<<"Percentage to get 4 black and 0 white = "
+            <<static_cast<float>(c)*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
+    cout<<"Percentage to get 0 black and 4 white = "
+            <<static_cast<float>(c)*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
     //Output the game statistics to a file
+    
+    
     cout<<fixed<<setprecision(2)<<showpoint;
     if (dataFile>>winner){
        cout<<"The winner = "<<winner<<endl;  //file the winner 
     }
-    //cout<<"The winner = "<<dataFile"winner.txt"<<endl;  //file the winner
-    //out<<"Total number of Games = "<<nGames<<endl;
-    //out<<"Number of games won /user  = "<<user<<endl;
-    //out<<"Number of games lost/comp  = "<<comp<<endl;
-    //out<<"Total wins and losses /+   = "<<user+comp<<endl;
-    //out<<"Percentage wins    /user   = "
-     //       <<static_cast<float>(user)/nsteps*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
-    //out<<"Percentage losses  /comp   = "
-      //      <<static_cast<float>(comp)/nsteps*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
-
+    out<<"Last game of winner = "<<winner<<endl;    
+    out<<"When you throw the 4 sticks, "<<endl;
+    out<<"Number of games won /user  = "<<user<<endl;
+    out<<"Number of games lost/comp  = "<<comp<<endl;
+    out<<"Total wins and losses /+   = "<<user+comp<<endl;
+    out<<"Percentage to get 1 black and 3 white = "
+            <<static_cast<float>(a)*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
+    out<<"Percentage to get 2 black and 2 white = "
+            <<static_cast<float>(b)*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
+    out<<"Percentage to get 3 black and 1 white = "
+            <<static_cast<float>(a)*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
+    out<<"Percentage to get 4 black and 0 white = "
+            <<static_cast<float>(c)*100.0f<<"%"<<endl; //(losses)/nGames*100.0f<<"%"<<endl;
+    out<<"Percentage to get 0 black and 4 white = "
+            <<static_cast<float>(c)*100.0f<<"%"<<endl;   //user)/nGames*100.0f<<"%"<<endl;
+    
     //Close Files and Exit stage right!
     dataFile.close();
+    out.close();
  
-    
-    
-    
-    
-
     return 0;
 }
-    
-
-    
-//void write(ofstream &output,string fn,vector<char> &ans,vector<char> &test,int n){
-//    //Open the file for writing
-//    output.open(fn.c_str());
-//   
-//    //Process/Calculations and output the result
-//    int correct=score(ans,test,n);
-//    output<<"Correct Answers = "<<correct
-//            <<" out of "<<n<<endl;
-//    output<<"Percentage score = "
-//            <<100.0f*correct/n<<"%"
-//            <<endl;
-//
-//    //Close the file
-//    output.close();
-//}
-
-//void read(fstream & input,string fn,vector<char> &ans,int n){
-//    //Open the file
-//    input.open(fn.c_str(),ios::in);
-//
-//    //Read the data from the file
-//    for(int i=0;i<n;i++){
-//        input>>ans[i];
-//        //cout<<ans[i];
-//    }
-//
-//    //Close the file
-//    input.close();
-//}
-//
-//void read(ifstream & input,char fn[],vector<char> &ans){
-//    //Open the file
-//    input.open(fn);
-//    
-//    //Read the data from the file
-//    int i=0;
-//    while(input>>ans[i++]);
-//
-//    //Close the file
-//    input.close();
-//}
 
 int throwStick() {
     //int sticks;
@@ -323,7 +284,6 @@ int throwStick() {
             } else  cout << "white"; 
      }
     if (count==0) count=5; 
-
     cout<<endl;
        
     return count;
