@@ -1,7 +1,1 @@
-Last game of winner = User
-When you throw the 4 sticks, 
-Number of games won /user  = 22
-Number of games lost/comp  = 14
-Total wins and losses /+   = 36
-Percentage wins    /user   = 104.762%
-Percentage losses  /comp   = 66.6667%
+The last game winner = Computer
