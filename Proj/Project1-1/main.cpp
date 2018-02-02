@@ -50,7 +50,7 @@ int main(int argc, char** argv)  {
     out.open(outName);              //Open the Output File
 
     //Start the Game
-    string greet = "Hello ";        //Print out "Hellow" when I use greet
+    string greet = "Hello ";        //Print out "Hello" when I use greet
     cout<<greet<<" This is Yut Nori, Korean New Years Game"<<endl;
     cout<<"To choose who goes first, play the Rock - Paper - Scissors"<<endl;
     
