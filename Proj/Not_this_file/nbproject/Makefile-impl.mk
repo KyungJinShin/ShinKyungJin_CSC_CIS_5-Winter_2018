@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Project_1_Yut_Game
+PROJECTNAME=Not_this_file
 
 # Active Configuration
 DEFAULTCONF=Debug
