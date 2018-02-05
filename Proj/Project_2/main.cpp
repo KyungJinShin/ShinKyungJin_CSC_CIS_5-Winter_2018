@@ -97,7 +97,10 @@ int main(int argc, char** argv)  {
         /*------------------------Yut Nori Game-------------------------------------------------*/
         const int ROWS=7;   //Total 7 Rows 
         float board[ROWS][COLS];
+        grid (board,ROWS)
+        show (board,ROWS)
         
+                
         cout<<endl<<"This is the Yut Nori Game Board"<<endl;
         cout<<"Arriving from Starting position (a 0) to (a 20) is winning the game"<<endl<<endl;
         grid(x,y);  //Display the Yut Nori Board Game Grid
@@ -342,23 +345,30 @@ int thrwSt() {
     return count; //Return to count
 }
 
-void grid(vector<char> &x, vector<char> &y) {
-    cout<<setw(10)<<"a"<<endl;
-    cout<<setw(13)<<right<<"0------0"<<endl;
+void prntAry(float array[][COLS], int rows) {
+    //Heading
+    cout<<setw(COLS+8)<<" "<<"Yut Nori Game Board"<<endl;
+         //" " is left justify. it affects COLS+8
+         //heading will move depending on columns, add 8 for the first portion
+    cout<<"        ";
+    cout<<setw(10)<<"a"<<setw(4)<<"b"<<setw(4)<<"c"<<setw(4)<<"d"<<setw(4)<<"e"<<setw(4)<<"f"<<setw(4)<<"g"<<endl;
+    cout<<setw(13)<<right<<"0------0------0------0------0------0------0------0"<<endl;
+    
+    for
     
     for(short i=0; i<1; i++) {  // Display a0 position
         cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |  START"<<endl;
-        cout<<setw(13)<<"0------0"<<endl;
+        cout<<setw(13)<<"0------0------0------0------0------0------0------0"<<endl;
     }
-    for(short i=1; i<20; i++) {  // Display a1 to a19 positions
+    for(short i=1; i<6; i++) {  // Display a1 to a19 positions
         cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |"<<endl;  
         //user piece(x) and computer piece(y) will show in the square position
-        cout<<setw(13)<<"0------0"<<endl;
+        cout<<setw(13)<<"0------0------0------0------0------0------0------0"<<endl;
     }
-    for(short i=20; i<21; i++) {  // Display a20 position
+    for(short i=6; i<7; i++) {  // Display a20 position
         cout<<setw(3)<<i<<"  | "<<x[i]<<" "<<y[i]<<"  |"<<endl;
         //user piece(x) and computer piece(y) will show in the square position
-        cout<<setw(13)<<"0------0"<<endl;
+        cout<<setw(13)<<"0------0------0------0------0------0------0------0"<<endl;
         cout<<setw(13)<<"   END  "<<endl;
     }
     
@@ -484,6 +494,9 @@ void  prntAry(float array[][COLS],int rows){
          //" " is left justify. it affects COLS+8
          //heading will move depending on columns, add 8 for the first portion
     cout<<"        ";
+    
+    
+    
     for(int col=0; col<COLS; col++){
         cout<<setw(2)<<col+1<<" ";
     }
