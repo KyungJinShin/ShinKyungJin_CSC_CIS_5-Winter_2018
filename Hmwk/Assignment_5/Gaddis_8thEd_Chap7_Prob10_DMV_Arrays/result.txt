@@ -1,0 +1,2 @@
+Correct Answers = 15 out of 20
+Percentage score = 75%
