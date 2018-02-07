@@ -21,16 +21,26 @@ using namespace std;
 //Global Constants - Math/Physics Constants, Conversions,
 //                   2-D Array Dimensions
 const int COLS=7; //Total 7 Columns
-const int ROWS=7; 
+const int ROWS=7; //this should not be a global const
+
+//structure
+struct PairArray{
+    pair<int, int> *array;
+    int size;
+};
 
 //Function Prototypes
-int Lsearch(const int [], int, int); //Linear searchlist
-int Bsearch(const int [], int, int);  //Binary searchlist
-void Bsort(int [], int); //Bubble sort array
-void Bshow(const int [], int); //Bubble sort show array
+int searchL(const int [], int, int); //Linear searchlist
+int searchB(const int [], int, int);  //Binary searchlist
+void sortB(int [], int); //Bubble sort array
+void showB(const int [], int); //Bubble sort show array
+void sortS(int [], int);  //Selection sort
+void showS(const int [], int); //Selection show array
 void grid(vector<char> &, vector<char> &);
 int thrwSt();
-void  prntAry(int [][COLS],int);  //[][COLS]  == 2-D
+PairArray posit1(); //(0,0) -> 0
+void posit2(); //0 -> (0,0)
+void prntAry(pair<char, char> board[][COLS],int ROWS );  //[][COLS]  == 2-D
 //void  prntAry(int [][COLS],int);  //[][COLS]  == 2-D
 //void show(int[][COLS], int);
 
@@ -38,7 +48,7 @@ void  prntAry(int [][COLS],int);  //[][COLS]  == 2-D
 int main(int argc, char** argv)  {    
     //Generate Random Number Seed
     srand(static_cast<unsigned int>(time(0)));  //Random Number Generator
-    
+            
     //Declare Variables
     char comput; //Computer for Rock-Paper-Scissors game
     char player; //Player for Rock-Paper-Scissors game
@@ -68,12 +78,12 @@ int main(int argc, char** argv)  {
         const int SIZE=3;
         int highCh[SIZE] = {25,38,6};  //25%, 37.5% to round up 38%, 6.25% to round down 6%, search list
         int resultL;
-        resultL = Lsearch(highCh,SIZE,25); //Linear search, find 25 from 25,38,and 6
+        resultL = searchL(highCh,SIZE,25); //Linear search, find 25 from 25,38,and 6
         
         //Binary search
         int lowCh[SIZE] = {6,25,38,}; //25%, 37.5% to round up 38%, 6.25% to round down 6%, search list
         int resultB;
-        resultB = Bsearch(lowCh,SIZE,6);
+        resultB = searchB(lowCh,SIZE,6);
         
         cout<<fixed<<setprecision(2)<<showpoint; //2 decimal points
         const int BLACK = 3;
@@ -106,18 +116,17 @@ int main(int argc, char** argv)  {
         cout<<"Percentage to get 0 black and 4 white = "
                 <<setw(5)<<c*100.0f<<"%"<<endl<<endl; //(1/16)*100% possible
 
-                //Bubble sort
+        //Bubble sort
         //Unsorted values
         int valueB[3] = {38,25,6};
         //Display the values
         cout<<"The unsorted values are: "<<endl;
-        Bshow(valueB,3);
+        showB(valueB,3);
         //Sort the values
-        Bsort(valueB,3);
+        sortB(valueB,3);
         //Display them again
-        cout<<"The sorted values of low percentage to high percentage are: "<<endl;
-        Bshow(valueB,3);
-        
+        cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
+        showB(valueB,3);
         
 //    const int ROWS=7;   //Total 7 Rows 
 //        int board[ROWS][COLS];
@@ -151,118 +160,42 @@ int main(int argc, char** argv)  {
              
         }
         cout << "  0--0--0--0--0--0--0--0"<< endl;
-        
+        //do posit function to get that posit array
         
         comp=0; //Initialize computer is 0
         user=0; //Initialize user is 0
         int count=0; //Initialize count is 0
+        //init  posit
+        PairArray pairArray = posit1();
+//        pair<int,int> posit[] = pairArray.array;
+        
         //int nsteps = 21; //Total positions are 21 steps
 
-//        cout<<"User(x),Computer(y)"<<endl; //User's piece is x, Computer's piece is y on the board grid
-//        do{
-//            //Player goes first
-//            cout<<"Press enter to throw the 4 wood sticks : ";
-//            cin.get();  //Enter to move on
-//            do {
-//                count = thrwSt(); 
-//                board[count][0] = make_pair( ' ', 'y' );  //make x[position]=' '; somewhere after you display it and before you throw sticks again
-//                user += count; //User's positions adding up from each count
-//                cout<<endl<<"User(x) will move "<<count<<" steps."<<endl;  //Explain how much user will move from the result of sticks
-//                
+        cout<<"User(x),Computer(y)"<<endl; //User's piece is x, Computer's piece is y on the board grid
+        do{
+            //Player goes first
+            cout<<"Press enter to throw the 4 wood sticks : ";
+            cin.get();  //Enter to move on
+            do {
+                count = thrwSt(); 
+                
+                board[count][0] = make_pair( ' ', 'y' );  //make x[position]=' '; somewhere after you display it and before you throw sticks again
+                user += count; //User's positions adding up from each count
+                cout<<endl<<"User(x) will move "<<count<<" steps."<<endl;  //Explain how much user will move from the result of sticks
+                
+                if( user == comp ){
+                    board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', 'y' ) ;
+                } else{
+                    board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' ) ;
+                }
+                prntAry( board, ROWS );
 //                if (user<7){
 //                    //Print the User's Grid
-//                    pair<char, char> board[ROWS][COLS];               
-//                    if (board[1][0]){
-//                        if (count==5){
-//                            cout<<"    0  1  2  3  4  5  6"<<endl;
-//                            for( int i = 0; i< ROWS; i++ ){
-//                                cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                                cout << i << " |"; 
-//                                for( int j = 0; j < COLS; j++ ){
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                cout<<endl;
-//                            }
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        }
-//                    }
-//                    if (board[2][0]){
-//                        if (count==5){
-//                            cout<<"    0  1  2  3  4  5  6"<<endl;
-//                            for( int i = 0; i< ROWS; i++ ){
-//                                cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                                cout << i << " |"; 
-//                                for( int j = 0; j < COLS; j++ ){
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                cout<<endl;
-//                            }
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        }
-//                    }
-//                    if (board[3][0]){
-//                        if (count==5){
-//                            cout<<"    0  1  2  3  4  5  6"<<endl;
-//                            for( int i = 0; i< ROWS; i++ ){
-//                                cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                                cout << i << " |"; 
-//                                for( int j = 0; j < COLS; j++ ){
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                cout<<endl;
-//                            }
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        }
-//                    }
-//                    if (board[4][0]){
-//                        if (count==5){
-//                            cout<<"    0  1  2  3  4  5  6"<<endl;
-//                            for( int i = 0; i< ROWS; i++ ){
-//                                cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                                cout << i << " |"; 
-//                                for( int j = 0; j < COLS; j++ ){
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                cout<<endl;
-//                            }
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        }
-//                    }
-//                    if (board[5][0]){
-//                        if (count==5){
-//                            cout<<"    0  1  2  3  4  5  6"<<endl;
-//                            for( int i = 0; i< ROWS; i++ ){
-//                                cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                                cout << i << " |"; 
-//                                for( int j = 0; j < COLS; j++ ){
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                cout<<endl;
-//                            }
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        }
-//                    }
-//                    if (board[6][0]){
-//                        if (count==1 || count==2 || count==3 || count==4 || count==5){
-//                            cout<<"    0  1  2  3  4  5  6"<<endl;
-//                            for( int i = 0; i< ROWS; i++ ){
-//                                cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                                cout << i << " |"; 
-//                                for( int j = 0; j < COLS; j++ ){
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                cout<<endl;
-//                            }
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        }
-//                    }
-//                    
-//                    
-//                    
-//                    
-//                    
-//                    board[user][0] = make_pair( 'x', ' ' ); // mark 'x', no 'y'
-//
+////                    pair<char, char> board[ROWS][COLS];               
+//                    prntAry( board, ROWS );
+//                       
+//                    board[posit[user].first][posit[user].second] = make_pair( 'x', ' ' ) ;
+//                    //board[user][0] = make_pair( 'x', ' ' ); // mark 'x', no 'y'
 //                    cout<<"    0  1  2  3  4  5  6"<<endl;
 //                    for( int i = 0; i< ROWS; i++ ){
 //                        cout << "  0--0--0--0--0--0--0--0"<< endl;
@@ -373,93 +306,104 @@ int main(int argc, char** argv)  {
 //                        board[6][comp] = make_pair( ' ', 'y' ); //mark 'y'
 //                        cout<<endl;
 //
-//                    if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;    
-//                    }  //Only when sticks are white,white,white,white or black,black,black,black, throw one more time
-//                }                
-//                
-//                
-//
-//            }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
-//
-//            //Computer goes next
-//                cout<<"And now Computer's(y) turn..."<<endl<<endl;
-//                do{
-//                    count = thrwSt(); board[count-6][0] = make_pair( 'x', ' ' ); //make y[position]=' '; somewhere after you display it and before you throw sticks again
-//
-//                    //Print the Computer's Grid
-//                    if (count==0) count=5; //If you get 4 white, you will move 5 steps
-//                        cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl; //Explain how much user will move from the result of sticks
-//                        comp+=count; //Computer's positions adding up from each count
-//                        pair<char, char> board[ROWS][COLS];
-//                        board[comp][0] = make_pair( ' ', 'y' );// mark 'y', no 'x' 
-//
-//
-//                        cout<<"    0  1  2  3  4  5  6"<<endl;
-//                        for( int i = 0; i< ROWS; i++ ){
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                            cout << i << " |"; 
-//                            for( int j = 0; j < COLS; j++ ){
-//                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-////                                if (board[user][0] != make_pair( ' ', ' ' )) {
-////                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-////                                }
-////                                else {
-////                                    cout << board[i][j].first << board[i][j].second << '|';
-////                                }
-//                            }
-//                            cout<<endl;
-//
-//                        }
-//                        cout << "  0--0--0--0--0--0--0--0"<< endl;                            
-//                        
-////                        prntAry(x,y);   //Display the new grid
-//
-//                    if (comp==user){
-//                        pair<char, char> board[ROWS][COLS];                        
-//                        board[comp][0] = make_pair( ' ', 'y' );  //no 'x', mark ' ', previous mark was disappeared
-//                        board[0][0] = make_pair( 'x', ' ' );
-//                        count=0;//Initialize count is 0
-//                        user=0;//Initialize user is 0. User go back to starting position because computer's piece catched the user's piece
-//                        cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position (a 0)"<<endl;
-////                        prntAry(x,y);   //Show new marks on the grid 
-//                        
-//                        cout<<"    0  1  2  3  4  5  6"<<endl;
-//                        for( int i = 0; i< ROWS; i++ ){
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                            cout << i << " |"; 
-//                            for( int j = 0; j < COLS; j++ ){
-//                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-////                                if (board[user][0] != make_pair( ' ', ' ' )) {
-////                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-////                                }
-////                                else {
-////                                    cout << board[i][j].first << board[i][j].second << '|';
-////                                }
-//                            }
-//                            cout<<endl;
-//
-//                        }
-//                        cout << "  0--0--0--0--0--0--0--0"<< endl;                            
-//                        
-//                        board[user][0] = make_pair( 'x', ' ' );//mark 'x' 
-//                        cout<<endl;
-//
-//                    if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;   
-//                    }    
-//
-//                }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
-//
-////            if (user>=nsteps){ //When user passed the a20 position
-////                cout<<"Congraulation! User(x) won!"<<endl;
-//////                data<<"User"<<endl;     //When user won, File the "User"
-////            }else if (comp>=nsteps){  //When computer passed the a20 position
-////                cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
-//////                data<<"Computer"<<endl; //When computer won, File the "Computer"
-////            }
-//        }while(!(comp>=24) && !(user>=24));  //Loops stop when computer piece or user piece arrived at end of the position
-//               //same as = while(!(comp>=nsteps) || !(user>=nsteps))  = while(comp<nsteps || user<nsteps)                      
-//        
-//        
+//                        if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;    
+//                        }  //Only when sticks are white,white,white,white or black,black,black,black, throw one more time
+//                    }                   
+
+            }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
+
+            //Computer goes next
+                cout<<"And now Computer's(y) turn..."<<endl<<endl;
+                do{
+                    count = thrwSt(); board[count-6][0] = make_pair( 'x', ' ' ); //make y[position]=' '; somewhere after you display it and before you throw sticks again
+
+                    //Print the Computer's Grid
+                    if (count==0) count=5; //If you get 4 white, you will move 5 steps
+                        cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl; //Explain how much user will move from the result of sticks
+                        comp+=count; //Computer's positions adding up from each count
+                        pair<char, char> board[ROWS][COLS];
+                        board[comp][0] = make_pair( ' ', 'y' );// mark 'y', no 'x' 
+
+
+                        cout<<"    0  1  2  3  4  5  6"<<endl;
+                        for( int i = 0; i< ROWS; i++ ){
+                            cout << "  0--0--0--0--0--0--0--0"<< endl;
+                            cout << i << " |"; 
+                            for( int j = 0; j < COLS; j++ ){
+                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
+//                                if (board[user][0] != make_pair( ' ', ' ' )) {
+//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
+//                                }
+//                                else {
+//                                    cout << board[i][j].first << board[i][j].second << '|';
+//                                }
+                            }
+                            cout<<endl;
+
+                        }
+                        cout << "  0--0--0--0--0--0--0--0"<< endl;                            
+                        
+//                        prntAry(x,y);   //Display the new grid
+
+                    if (comp==user){
+                        pair<char, char> board[ROWS][COLS];                        
+                        board[comp][0] = make_pair( ' ', 'y' );  //no 'x', mark ' ', previous mark was disappeared
+                        board[0][0] = make_pair( 'x', ' ' );
+                        count=0;//Initialize count is 0
+                        user=0;//Initialize user is 0. User go back to starting position because computer's piece catched the user's piece
+                        cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position (a 0)"<<endl;
+//                        prntAry(x,y);   //Show new marks on the grid 
+                        
+                        cout<<"    0  1  2  3  4  5  6"<<endl;
+                        for( int i = 0; i< ROWS; i++ ){
+                            cout << "  0--0--0--0--0--0--0--0"<< endl;
+                            cout << i << " |"; 
+                            for( int j = 0; j < COLS; j++ ){
+                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
+//                                if (board[user][0] != make_pair( ' ', ' ' )) {
+//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
+//                                }
+//                                else {
+//                                    cout << board[i][j].first << board[i][j].second << '|';
+//                                }
+                            }
+                            cout<<endl;
+
+                        }
+                        cout << "  0--0--0--0--0--0--0--0"<< endl;                            
+                        
+                        board[user][0] = make_pair( 'x', ' ' );//mark 'x' 
+                        cout<<endl;
+
+                    if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;   
+                    }    
+
+                }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
+
+//            if (user>=nsteps){ //When user passed the a20 position
+//                cout<<"Congraulation! User(x) won!"<<endl;
+////                data<<"User"<<endl;     //When user won, File the "User"
+//            }else if (comp>=nsteps){  //When computer passed the a20 position
+//                cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
+////                data<<"Computer"<<endl; //When computer won, File the "Computer"
+//            }
+        }while(!(comp>=24) && !(user>=24));  //Loops stop when computer piece or user piece arrived at end of the position
+               //same as = while(!(comp>=nsteps) || !(user>=nsteps))  = while(comp<nsteps || user<nsteps)                      
+        
+        
+        //Selection sort
+        //Define an array with unsorted values
+        //const int SIZE = 3; declare before Lineary search
+        int valueS[SIZE] = {38,6,25};
+        //Display the values
+        cout<<endl<<"The unsorted values are: "<<endl;
+        showS(valueS,SIZE);
+        //Sort the values
+        sortS(valueS,SIZE);
+        //Display the values again
+        cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
+        showS(valueS,SIZE);
+        
         
         
         return 0;/*
@@ -538,25 +482,23 @@ int main(int argc, char** argv)  {
 
     return 0;
                   */
+        delete pairArray.array;
 }
 
-//void  prntAry(int [][COLS],int ROWS){  //[][COLS]  == 2-D
-//    pair<int, int> player1( 3, 0 );
-//    pair<int, int> player2( 0, 0 );
-//    
-//    //printArray function
-//    cout<<"    0  1  2  3  4  5  6"<<endl;
-//    for( int i = 0; i< ROWS; i++ ){
-//        cout << "  0--0--0--0--0--0--0--0"<< endl;
-//        cout << i << " |"; 
-//        for( int j = 0; j < COLS; j++ ){
-//            cout << board[i][j].first << board[i][j].second << '|';
-//        }
-//        cout<<endl;
-//
-//    }
-//    cout << "  0--0--0--0--0--0--0--0"<< endl;
-//}
+void  prntAry( pair<char, char> board[][COLS],int ROWS ){  //[][COLS]  == 2-D
+    
+    //printArray function
+    cout<<"    0  1  2  3  4  5  6"<<endl;
+    for( int i = 0; i< ROWS; i++ ){
+        cout << "  0--0--0--0--0--0--0--0"<< endl;
+        cout << i << " |"; 
+        for( int j = 0; j < COLS; j++ ){
+            cout << board[i][j].first << board[i][j].second <<"  "<< '|';
+        }
+        cout<<endl;
+    }
+    cout << "  0--0--0--0--0--0--0--0"<< endl;
+}
 
 int thrwSt() {
     /*
@@ -580,6 +522,25 @@ int thrwSt() {
     cout<<endl;
        
     return count; //Return to count
+}
+
+PairArray posit1(){        
+    //Position1 Function
+    //make the struct
+    PairArray temp;
+    //open the file
+    ifstream file;
+    file.open( "posit" );
+    file >> temp.size;
+    temp.array = new pair<int, int>[temp.size];// posit[positSize];
+    for( int i = 0; i < temp.size; i++ ){
+        int x, y;
+        file >> x;
+        file >> y;
+        temp.array[i] = make_pair( x, y );
+//        cout << '(' << posit[i].first << ',' << posit[i].second << ')' << endl;
+    }
+    return temp;
 }
 
 void grid(vector<char> &x, vector<char> &y) { 
@@ -606,13 +567,37 @@ void grid(vector<char> &x, vector<char> &y) {
     }
 }
 
-void Bshow(const int array[], int size){
+void showS(const int array[], int size){
+    for(int count=0; count < size; count++){
+        cout<<array[count]<<"% ";
+    }cout<<endl;
+}
+
+void sortS(int array[], int size){
+    int scan; //start scan
+    int mindex; //min index
+    int mvalue; //min value
+    for(scan = 0; scan < (size - 1); scan++){
+        mindex = scan;
+        mvalue = array[scan];
+        for(int index = scan+1; index < size; index++){
+            if(array[index] < mvalue){
+                mvalue = array[index];
+                mindex = index;
+            }
+        }
+        array[mindex] = array[scan];
+        array[scan] = mvalue;
+    }
+}
+
+void showB(const int array[], int size){
     for(int count=0; count<size; count++){
         cout<<array[count]<<"% ";
     }cout<<endl;
 }
 
-void Bsort(int array[], int size){ 
+void sortB(int array[], int size){ 
     bool swap;
     int temp;
     do{
@@ -628,7 +613,7 @@ void Bsort(int array[], int size){
     }while(swap);
 }
 
-int Bsearch(const int array[], int num, int value){
+int searchB(const int array[], int num, int value){
     int first = 0,          //First array element
             last = num-1,   //Last array element
             middle,         //Midpoint of search
@@ -648,7 +633,7 @@ int Bsearch(const int array[], int num, int value){
     return posit;
 }
 
-int Lsearch(const int list[], int num, int value){
+int searchL(const int list[], int num, int value){
     int index = 0; //Used as a subscript to search array
     int posit = -1;//Recording Position of search value
     bool found = false; //Flag to indicate if the value was found
