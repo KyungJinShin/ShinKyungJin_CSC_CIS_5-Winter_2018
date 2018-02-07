@@ -37,7 +37,7 @@ void showB(const int [], int); //Bubble sort show array
 void sortS(int [], int);  //Selection sort
 void showS(const int [], int); //Selection show array
 void grid(vector<char> &, vector<char> &);
-int thrwSt();
+int thrwSt();  //Throw the dice
 PairArray posit1(); //(0,0) -> 0
 void posit2(); //0 -> (0,0)
 void prntAry(pair<char, char> board[][COLS],int ROWS );  //[][COLS]  == 2-D
@@ -59,7 +59,7 @@ int main(int argc, char** argv)  {
     //Variables for wood sticks game 
     pair<int, int> player1( 3, 0 );
     pair<int, int> player2( 0, 0 );
-    
+    //Example grid path way
     vector<char> x(21, ' '); // to store 'x' on a current position and a space on other positions
     vector<char> y(21, ' '); // to store 'y' on a current position and a space on other positions
     vector<string> winners();
@@ -76,18 +76,18 @@ int main(int argc, char** argv)  {
         
         //Linear search
         const int SIZE=3;
-        int highCh[SIZE] = {25,38,6};  //25%, 37.5% to round up 38%, 6.25% to round down 6%, search list
-        int resultL;
+        int highCh[SIZE] = {25,38,6};  //25%, 37.5% to round up 38%, 6.25% to round down 6%, search list, randomly ordered
+        int resultL;  //Result of Linear search
         resultL = searchL(highCh,SIZE,25); //Linear search, find 25 from 25,38,and 6
         
         //Binary search
         int lowCh[SIZE] = {6,25,38,}; //25%, 37.5% to round up 38%, 6.25% to round down 6%, search list
-        int resultB;
+        int resultB;  //Result of Binary search
         resultB = searchB(lowCh,SIZE,6);
         
         cout<<fixed<<setprecision(2)<<showpoint; //2 decimal points
-        const int BLACK = 3;
-        const int WHITE = 3;
+        const int BLACK = 3; //Up to 3 black
+        const int WHITE = 3; //Up to 3 white
         int chance[BLACK][WHITE];  //2D Array
         
         cout<<endl<<"When you throw the 4 sticks, "<<endl;
@@ -118,7 +118,7 @@ int main(int argc, char** argv)  {
 
         //Bubble sort
         //Unsorted values
-        int valueB[3] = {38,25,6};
+        int valueB[3] = {38,25,6};  //not arranged yet
         //Display the values
         cout<<"The unsorted values are: "<<endl;
         showB(valueB,3);
@@ -131,35 +131,23 @@ int main(int argc, char** argv)  {
 //    const int ROWS=7;   //Total 7 Rows 
 //        int board[ROWS][COLS];
         pair<char, char> board[ROWS][COLS];
-        //grid (board,ROWS)
-        //show (board,ROWS)
         
         //init the board array
         for( int i = 0; i< ROWS; i++ ){
             for( int j = 0; j < COLS; j++ ){
-                board[i][j] = make_pair( ' ', ' ' );
+                board[i][j] = make_pair( ' ', ' ' ); //Blank space on each space
             }
         }
-//                
+              
         cout<<endl<<"This is the Yut Nori Game Board"<<endl;
         cout<<"Arriving from Starting position (0 0) to come back to (0 0) is winning the game"<<endl<<endl;
-        grid(x,y);   //Show marks on the grid
-        cout<<endl;
-        board[0][0] = make_pair( 'x', 'y' );
-        //board[4][2] = make_pair( 'x', ' '); // board[rowX][colX]
+        grid(x,y);   //Show pathway on the grid
+        cout<<endl;  //give a one line space after showing example grid
+        board[0][0] = make_pair( 'x', 'y' );  //Starting points, Both x and y start at (row0 col0)
         
         //printArray function
-        cout<<"    0  1  2  3  4  5  6"<<endl;
-        for( int i = 0; i< ROWS; i++ ){
-            cout << "  0--0--0--0--0--0--0--0"<< endl;
-            cout << i << " |"; 
-            for( int j = 0; j < COLS; j++ ){
-                cout << board[i][j].first << board[i][j].second << '|';
-            }
-            cout<<endl;
-             
-        }
-        cout << "  0--0--0--0--0--0--0--0"<< endl;
+        PairArray posit1(); //Show the position on the grid
+
         //do posit function to get that posit array
         
         comp=0; //Initialize computer is 0
@@ -167,226 +155,112 @@ int main(int argc, char** argv)  {
         int count=0; //Initialize count is 0
         //init  posit
         PairArray pairArray = posit1();
-//        pair<int,int> posit[] = pairArray.array;
         
-        //int nsteps = 21; //Total positions are 21 steps
+        int nsteps = 24; //Total positions are 24 steps 
 
         cout<<"User(x),Computer(y)"<<endl; //User's piece is x, Computer's piece is y on the board grid
         do{
             //Player goes first
-            cout<<"Press enter to throw the 4 wood sticks : ";
+            cout<<"Press enter to throw the 4 wood sticks : "; //Other key won't work. only enter key works
             cin.get();  //Enter to move on
             do {
-                count = thrwSt(); 
+                count = thrwSt(); //Throw stick function
+                board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( ' ', 'y' );     
+                //board[count][0] = make_pair( ' ', 'y' );  //make x[position]=' '; somewhere after you display it and before you throw sticks again
                 
-                board[count][0] = make_pair( ' ', 'y' );  //make x[position]=' '; somewhere after you display it and before you throw sticks again
                 user += count; //User's positions adding up from each count
+//                board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( ' ', ' ' );
                 cout<<endl<<"User(x) will move "<<count<<" steps."<<endl;  //Explain how much user will move from the result of sticks
-                
+                board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' );       
+                prntAry( board, ROWS );   //Print the User's Grid
+         
                 if( user == comp ){
-                    board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', 'y' ) ;
-                } else{
-                    board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' ) ;
-                }
-                prntAry( board, ROWS );
-//                if (user<7){
-//                    //Print the User's Grid
-////                    pair<char, char> board[ROWS][COLS];               
-//                    prntAry( board, ROWS );
-//                       
-//                    board[posit[user].first][posit[user].second] = make_pair( 'x', ' ' ) ;
-//                    //board[user][0] = make_pair( 'x', ' ' ); // mark 'x', no 'y'
-//                    cout<<"    0  1  2  3  4  5  6"<<endl;
-//                    for( int i = 0; i< ROWS; i++ ){
-//                        cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        cout << i << " |"; 
-//                        for( int j = 0; j < COLS; j++ ){
-//                            cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                        if (board[user][0] != make_pair( 'x', ' ' )) {
-//    //                            cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                        }
-//    //                        else {
-//    //                            cout << board[i][j].first << board[i][j].second << '|';
-//    //                        }
-//                        }
-//                        cout<<endl;
-//
-//                    }
-//                    cout << "  0--0--0--0--0--0--0--0"<< endl;
-//
-//    //                board[][];   //Show marks on the grid
-//
-//                    if (user==comp){
-//                        pair<char, char> board[ROWS][COLS];                    
-//                        board[comp][0] = make_pair( 'x', ' ' );  //no 'y', mark ' '. Previous mark will disappear
-//                        board[0][0] = make_pair( ' ', 'y' );
-//                        count=0;//Initialize count is 0
-//                        comp=0; //Initialize computer is 0. Computer go back to starting position because user's piece catched the computer's piece
-//                        cout<<"User(x) catched the computer's piece(y). Computer piece(y) go back to starting position (a 0)"<<endl;
-//    //                    prntAry(x,y);   //Show new marks on the grid 
-//
-//
-//                        cout<<"    0  1  2  3  4  5  6"<<endl;
-//                        for( int i = 0; i< ROWS; i++ ){
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                            cout << i << " |"; 
-//                            for( int j = 0; j < COLS; j++ ){
-//                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                            if (board[user][0] != make_pair( ' ', ' ' )) {
-//    //                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                            }
-//    //                            else {
-//    //                                cout << board[i][j].first << board[i][j].second << '|';
-//    //                            }
-//                            }
-//                            cout<<endl;
-//
-//                        }
-//                        cout << "  0--0--0--0--0--0--0--0"<< endl;                    
-//
-//                        board[comp][0] = make_pair( ' ', 'y' ); //mark 'y'
-//                        cout<<endl;
-//
-//                    if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;    
-//                    }  //Only when sticks are white,white,white,white or black,black,black,black, throw one more time
-//
-//                }else if (user>6){
-//                    //Print the User's Grid
-//                    pair<char, char> board[ROWS][COLS];               
-//                    board[6][user] = make_pair( 'x', ' ' ); // mark 'x', no 'y'
-//
-//                    cout<<"    0  1  2  3  4  5  6"<<endl;
-//                    for( int i = 0; i< ROWS; i++ ){
-//                        cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                        cout << i << " |"; 
-//                        for( int j = 0; j < COLS; j++ ){
-//                            cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                        if (board[user][0] != make_pair( 'x', ' ' )) {
-//    //                            cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                        }
-//    //                        else {
-//    //                            cout << board[i][j].first << board[i][j].second << '|';
-//    //                        }
-//                        }
-//                        cout<<endl;
-//
-//                    }
-//                    cout << "  0--0--0--0--0--0--0--0"<< endl;
-//
-//    //                board[][];   //Show marks on the grid
-//
-//                    if (user==comp){
-//                        pair<char, char> board[ROWS][COLS];                    
-//                        board[6][comp] = make_pair( 'x', ' ' );  //no 'y', mark ' '. Previous mark will disappear
-//                        board[0][0] = make_pair( ' ', 'y' );
-//                        count=0;//Initialize count is 0
-//                        comp=0; //Initialize computer is 0. Computer go back to starting position because user's piece catched the computer's piece
-//                        cout<<"User(x) catched the computer's piece(y). Computer piece(y) go back to starting position (a 0)"<<endl;
-//    //                    prntAry(x,y);   //Show new marks on the grid 
-//
-//
-//                        cout<<"    0  1  2  3  4  5  6"<<endl;
-//                        for( int i = 0; i< ROWS; i++ ){
-//                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-//                            cout << i << " |"; 
-//                            for( int j = 0; j < COLS; j++ ){
-//                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                            if (board[user][0] != make_pair( ' ', ' ' )) {
-//    //                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//    //                            }
-//    //                            else {
-//    //                                cout << board[i][j].first << board[i][j].second << '|';
-//    //                            }
-//                            }
-//                            cout<<endl;
-//
-//                        }
-//                        cout << "  0--0--0--0--0--0--0--0"<< endl;                    
-//
-//                        board[6][comp] = make_pair( ' ', 'y' ); //mark 'y'
-//                        cout<<endl;
-//
-//                        if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;    
-//                        }  //Only when sticks are white,white,white,white or black,black,black,black, throw one more time
-//                    }                   
-
+                    board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( 'x', ' ' );  
+//                    board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', 'y' );
+                    prntAry( board, ROWS );
+//                    board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' );  
+                    //board[comp][0] = make_pair( 'x', ' ' );  //no 'y', mark ' '. Previous mark will disappear
+                    board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' );  //board[0][0] = make_pair( ' ', 'y' );
+                    cout<<"User(x) catched the computer's piece(y). Computer piece(y) go back to starting position (0 0)"<<endl;                        
+                    count=0;//Initialize count is 0
+                    comp=0; //Initialize computer is 0. Computer go back to starting position because user's piece catched the computer's piece                        
+                    prntAry( board, ROWS );   //Show new marks on the grid 
+                } //else{
+                    //board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' ) ;
+                //}
+                if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;    
+                      //Only when sticks are white,white,white,white or black,black,black,black, throw one more time
             }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
 
+            
             //Computer goes next
                 cout<<"And now Computer's(y) turn..."<<endl<<endl;
                 do{
-                    count = thrwSt(); board[count-6][0] = make_pair( 'x', ' ' ); //make y[position]=' '; somewhere after you display it and before you throw sticks again
+                    count = thrwSt(); //Throw stick function
+                    board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( 'x', ' ' );   
+                //board[count][0] = make_pair( ' ', 'y' );  //make x[position]=' '; somewhere after you display it and before you throw sticks again
+                
+                    comp += count; //Computer's positions adding up from each count
+//                    board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', ' ' );
+                    cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl;  //Explain how much computer will move from the result of sticks
+                    board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' );       
+                    prntAry( board, ROWS );   //Print the Computer's Grid
 
-                    //Print the Computer's Grid
-                    if (count==0) count=5; //If you get 4 white, you will move 5 steps
-                        cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl; //Explain how much user will move from the result of sticks
-                        comp+=count; //Computer's positions adding up from each count
-                        pair<char, char> board[ROWS][COLS];
-                        board[comp][0] = make_pair( ' ', 'y' );// mark 'y', no 'x' 
-
-
-                        cout<<"    0  1  2  3  4  5  6"<<endl;
-                        for( int i = 0; i< ROWS; i++ ){
-                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-                            cout << i << " |"; 
-                            for( int j = 0; j < COLS; j++ ){
-                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                if (board[user][0] != make_pair( ' ', ' ' )) {
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                else {
-//                                    cout << board[i][j].first << board[i][j].second << '|';
-//                                }
-                            }
-                            cout<<endl;
-
-                        }
-                        cout << "  0--0--0--0--0--0--0--0"<< endl;                            
-                        
-//                        prntAry(x,y);   //Display the new grid
-
-                    if (comp==user){
-                        pair<char, char> board[ROWS][COLS];                        
-                        board[comp][0] = make_pair( ' ', 'y' );  //no 'x', mark ' ', previous mark was disappeared
-                        board[0][0] = make_pair( 'x', ' ' );
+                    if( comp == user ){
+                        board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( ' ', 'y' );  
+                        prntAry( board, ROWS );
+//                        board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( 'x', 'y' ) ;
+//                        board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' );  
+                        //board[comp][0] = make_pair( 'x', ' ' );  //no 'y', mark ' '. Previous mark will disappear
+                        board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' );  //board[0][0] = make_pair( ' ', 'y' );
+                        cout<<"Computer(y) catched the user's piece(x). User's piece(x) go back to starting position (0 0)"<<endl;                        
                         count=0;//Initialize count is 0
-                        user=0;//Initialize user is 0. User go back to starting position because computer's piece catched the user's piece
-                        cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position (a 0)"<<endl;
-//                        prntAry(x,y);   //Show new marks on the grid 
-                        
-                        cout<<"    0  1  2  3  4  5  6"<<endl;
-                        for( int i = 0; i< ROWS; i++ ){
-                            cout << "  0--0--0--0--0--0--0--0"<< endl;
-                            cout << i << " |"; 
-                            for( int j = 0; j < COLS; j++ ){
-                                cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                if (board[user][0] != make_pair( ' ', ' ' )) {
-//                                    cout << board[i][j].first << board[i][j].second <<"  "<< '|';
-//                                }
-//                                else {
-//                                    cout << board[i][j].first << board[i][j].second << '|';
-//                                }
-                            }
-                            cout<<endl;
-
-                        }
-                        cout << "  0--0--0--0--0--0--0--0"<< endl;                            
-                        
-                        board[user][0] = make_pair( 'x', ' ' );//mark 'x' 
-                        cout<<endl;
-
-                    if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;   
-                    }    
-
+                        comp=0; //Initialize computer is 0. Computer go back to starting position because user's piece catched the computer's piece                        
+                        prntAry( board, ROWS );   //Show new marks on the grid 
+                    } else{
+                        board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' ) ;
+                    }
+                        if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;    
+                          //Only when sticks are white,white,white,white or black,black,black,black, throw one more time
                 }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
+            
+            
+//            //Computer goes next
+//                cout<<"And now Computer's(y) turn..."<<endl<<endl;
+//                do{
+//                    count = thrwSt(); //board[count-6][0] = make_pair( 'x', ' ' ); //make y[position]=' '; somewhere after you display it and before you throw sticks again
+//
+//                    //Print the Computer's Grid
+//                    if (count==0) count=5; //If you get 4 white, you will move 5 steps
+//                        cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl; //Explain how much user will move from the result of sticks
+//                        comp+=count; //Computer's positions adding up from each count
+//                        board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' ) ;// mark 'y', no 'x' 
+//
+//                        prntAry( board, ROWS );    //Display the new grid
+//
+//                    if (comp==user){               
+//                        board[pairArray.array[comp].first][pairArray.array[0].second] = make_pair( ' ', 'y' ) ;  //[comp0]no 'x', mark ' ', previous mark was disappeared
+//                        board[pairArray.array[0].first][pairArray.array[0].second] = make_pair( 'x', ' ' ) ;
+//                        count=0;//Initialize count is 0
+//                        user=0;//Initialize user is 0. User go back to starting position because computer's piece catched the user's piece
+//                        cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position (a 0)"<<endl;
+//                        prntAry( board, ROWS );    //Show new marks on the grid                        
+//                        
+//                        board[pairArray.array[user].first][pairArray.array[0].second] = make_pair( 'x', ' ' ) ; //mark 'x' 
+//                        cout<<endl;
+//
+//                    if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;   
+//                    }    
+//
+//                }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
 
-//            if (user>=nsteps){ //When user passed the a20 position
-//                cout<<"Congraulation! User(x) won!"<<endl;
+            if (user>=nsteps){ //When user passed the a20 position
+                cout<<"Congraulation! User(x) won!"<<endl;
 ////                data<<"User"<<endl;     //When user won, File the "User"
-//            }else if (comp>=nsteps){  //When computer passed the a20 position
-//                cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
+            }else if (comp>=nsteps){  //When computer passed the a20 position
+                cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
 ////                data<<"Computer"<<endl; //When computer won, File the "Computer"
-//            }
+            }
         }while(!(comp>=24) && !(user>=24));  //Loops stop when computer piece or user piece arrived at end of the position
                //same as = while(!(comp>=nsteps) || !(user>=nsteps))  = while(comp<nsteps || user<nsteps)                      
         
@@ -404,89 +278,12 @@ int main(int argc, char** argv)  {
         cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
         showS(valueS,SIZE);
         
-        
-        
-        return 0;/*
-//        prntAry( board, ROWS );
-//        prntAry(x,y);  //Display the Yut Nori Board Game Grid
+        return 0;
 
-        comp=0; //Initialize computer is 0
-        user=0; //Initialize user is 0
-        int count=0; //Initialize count is 0
-        int nsteps = 21; //Total positions are 21 steps
-
-        cout<<"User(x),Computer(y)"<<endl; //User's piece is x, Computer's piece is y on the board grid
-        do{
-            //Player goes first
-            cout<<"Press enter to throw the 4 wood sticks : ";
-            cin.get();  //Enter to move on
-            do {
-                count = thrwSt(); board[i][j] = make_pair( ' ', ' ' );  //make x[position]=' '; somewhere after you display it and before you throw sticks again
-                user += count; //User's positions adding up from each count
-                cout<<endl<<"User(x) will move "<<count<<" steps."<<endl;  //Explain how much user will move from the result of sticks
-
-                //Print the User's Grid
-                board[i][j] = make_pair( 'x', ' ' ); // mark 'x'
-//                board[][];   //Show marks on the grid
-
-                if (user==comp){
-                    board[i][j] = make_pair( ' ', ' ' );  //mark ' '. Previous mark will disappear
-                    count=0;//Initialize count is 0
-                    comp=0; //Initialize computer is 0. Computer go back to starting position because user's piece catched the computer's piece
-                    cout<<"User(x) catched the computer's piece(y). Computer piece(y) go back to starting position (a 0)"<<endl;
-//                    prntAry(x,y);   //Show new marks on the grid 
-                    board[i][j] = make_pair( ' ', 'y' ); //mark 'y'
-                    cout<<endl;
-
-                if (count==4 || count==5 ) cout<<"User(x) has bonus to throw the sticks again"<<endl;    
-                }  //Only when sticks are white,white,white,white or black,black,black,black, throw one more time
-
-            }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
-
-            //Computer goes next
-                cout<<"And now Computer's(y) turn..."<<endl<<endl;
-                do{
-                    count = thrwSt(); board[i][j] = make_pair( ' ', ' ' ); //make y[position]=' '; somewhere after you display it and before you throw sticks again
-
-                    //Print the Computer's Grid
-                    if (count==0) count=5; //If you get 4 white, you will move 5 steps
-                        cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl; //Explain how much user will move from the result of sticks
-                        comp+=count; //Computer's positions adding up from each count
-                        board[i][j] = make_pair( ' ', 'y' ); // mark 'y' 
-//                        prntAry(x,y);   //Display the new grid
-
-                    if (comp==user){
-                        board[i][j] = make_pair( ' ', ' ' );  //mark ' ', previous mark was disappeared
-                        count=0;//Initialize count is 0
-                        user=0;//Initialize user is 0. User go back to starting position because computer's piece catched the user's piece
-                        cout<<"Computer(y) catched the user's piece(x). User piece(x) go back to starting position (a 0)"<<endl;
-//                        prntAry(x,y);   //Show new marks on the grid 
-                        board[i][j] = make_pair( 'x', ' ' ); //mark 'x' 
-                        cout<<endl;
-
-                    if (count==4 || count==5 ) cout<<"Computer(y) has bonus to throw the sticks again"<<endl;   
-                    }    
-
-                }while(count==4 || count==5); //Loops until sticks are white,white,white,white or black,black,black,black
-
-            if (user>=nsteps){ //When user passed the a20 position
-                cout<<"Congraulation! User(x) won!"<<endl;
-//                data<<"User"<<endl;     //When user won, File the "User"
-            }else if (comp>=nsteps){  //When computer passed the a20 position
-                cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
-//                data<<"Computer"<<endl; //When computer won, File the "Computer"
-            }
-        }while(!(comp>=nsteps) && !(user>=nsteps));  //Loops stop when computer piece or user piece arrived at end of the position
-               //same as = while(!(comp>=nsteps) || !(user>=nsteps))  = while(comp<nsteps || user<nsteps)                      
-        
-
-    return 0;
-                  */
         delete pairArray.array;
 }
 
 void  prntAry( pair<char, char> board[][COLS],int ROWS ){  //[][COLS]  == 2-D
-    
     //printArray function
     cout<<"    0  1  2  3  4  5  6"<<endl;
     for( int i = 0; i< ROWS; i++ ){
