@@ -22,7 +22,7 @@ using namespace std;
 //                   2-D Array Dimensions
 const int COLS=7; //Total 7 Columns for print Array and board
 const int BLACK = 3; //Up to 3 black for 2D array of black and white sticks
-
+const int COL=2;  //Information(declare) 2-D array
 //structure
 struct PairArray{
     pair<int, int> *array;  //* as pointer
@@ -38,6 +38,7 @@ void showB(const int [], int); //Bubble sort show array
 void sort(int [], int);  //Selection sort
 void showS(const int [], int); //Selection show array
 void tilde(int = 20, int = 1); //20 asterisks(tilde ~) col and 1 row
+void twoDAry(string [][COL], int);
 void grid(vector<char> &, vector<char> &);
 int thrwSt();  //Throw the dice
 PairArray posit1(); //(0,0) -> 0
@@ -54,6 +55,7 @@ int main(int argc, char** argv)  {
             
     //Declare Variables
     const int ROWS=7; //this should not be a global const
+    const int ROW=2;  //Information(declare) 2-D array
     char comput; //Computer for Rock-Paper-Scissors game
     char player; //Player for Rock-Paper-Scissors game
     short user=0;   //User for Yut Nori Game
@@ -64,10 +66,14 @@ int main(int argc, char** argv)  {
     //Variables for wood sticks game 
     pair<int, int> player1( 3, 0 );
     pair<int, int> player2( 0, 0 );
+    
+    //User is x, computer is y by using 2-D array
+    string info[ROW][COL]={{ "    user" , "computer" },
+                { "     x" , "    y" }};
     //Example grid path way
     vector<char> x(21, ' '); // to store 'x' on a current position and a space on other positions
     vector<char> y(21, ' '); // to store 'y' on a current position and a space on other positions
-    vector<string> winners();
+    //vector<string> winners();
     
        
         /*------------------------Yut Nori Game-------------------------------------------------*/
@@ -152,6 +158,8 @@ int main(int argc, char** argv)  {
         tilde(15);
         cout<<"Arriving from Starting position (0 0) to come back to (0 0) is winning the game"<<endl<<endl;
         grid(x,y);   //Show pathway on the grid
+        cout<<endl;
+        twoDAry(info,ROW);
         cout<<endl;  //give a one line space after showing example grid
         board[0][0] = make_pair( 'x', 'y' );  //Starting points, Both x and y start at (row0 col0)
         prntAry( board, ROWS );   //Print the string position on the board
@@ -348,6 +356,17 @@ void grid(vector<char> &x, vector<char> &y) {
                 <<" →"<<y[i]<<"|"<<" →"<<y[i]<<"|"<<" →"<<y[i]<<"|"<<" →"<<y[i]<<"|"<<endl;
         //user piece(x) and computer piece(y) will show in the square position
         cout<<"    "<<setw(18)<<"    0----0----0----0----0----0----0----0"<<endl;
+    }
+}
+
+void twoDAry(string info[][COL], int rows){
+        //Heading
+    cout<<setw(2)<<" "<<"< Information >"<<endl;
+    for (int x=0; x<rows; x++){
+        for (int y=0; y<COL; y++){
+            cout<<setw(4)<<info[x][y]<<" ";
+        }
+        cout<<endl;
     }
 }
 
