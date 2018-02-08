@@ -20,25 +20,29 @@ using namespace std;
 
 //Global Constants - Math/Physics Constants, Conversions,
 //                   2-D Array Dimensions
-const int COLS=7; //Total 7 Columns
+const int COLS=7; //Total 7 Columns for print Array and board
+const int BLACK = 3; //Up to 3 black for 2D array of black and white sticks
 
 //structure
 struct PairArray{
-    pair<int, int> *array;
+    pair<int, int> *array;  //* as pointer
     int size;
 };
 
 //Function Prototypes
 int searchL(const int [], int, int); //Linear searchlist
 int searchB(const int [], int, int);  //Binary searchlist
-void sortB(int [], int); //Bubble sort array
+//void sortB(int [], int); //Bubble sort array
+bool sort(int [], short);  //void sort(int [], int, bool &);
 void showB(const int [], int); //Bubble sort show array
-void sortS(int [], int);  //Selection sort
+void sort(int [], int);  //Selection sort
 void showS(const int [], int); //Selection show array
+void tilde(int = 20, int = 1); //20 asterisks(tilde ~) col and 1 row
 void grid(vector<char> &, vector<char> &);
 int thrwSt();  //Throw the dice
 PairArray posit1(); //(0,0) -> 0
-void posit2(); //0 -> (0,0)
+void ahead(); //Show how many steps ahead between user and computer moved
+void exit(); //To exit the program
 void prntAry(pair<char, char> board[][COLS],int ROWS );  //[][COLS]  == 2-D
 //void  prntAry(int [][COLS],int);  //[][COLS]  == 2-D
 //void show(int[][COLS], int);
@@ -56,6 +60,7 @@ int main(int argc, char** argv)  {
     short comp=0;   //Computer for Yut Nori Game
     int num;        //Integer Number, but I will range to 0 to 3
     string winner;  //To file the winner of Yut Nori Game
+    short numToSort = 3;
     //Variables for wood sticks game 
     pair<int, int> player1( 3, 0 );
     pair<int, int> player2( 0, 0 );
@@ -86,9 +91,11 @@ int main(int argc, char** argv)  {
         resultB = searchB(lowCh,SIZE,6);
         
         cout<<fixed<<setprecision(2)<<showpoint; //2 decimal points
-        const int BLACK = 3; //Up to 3 black
         const int WHITE = 3; //Up to 3 white
         int chance[BLACK][WHITE];  //2D Array
+        
+        //Display stars to indicate Rock-Scissor-Paper game to Yut Nori Game
+        tilde(); //print out ~
         
         cout<<endl<<"When you throw the 4 sticks, "<<endl;
         for(int black=BLACK; black<=BLACK; black++){
@@ -123,10 +130,11 @@ int main(int argc, char** argv)  {
         cout<<"The unsorted values are: "<<endl;
         showB(valueB,3);
         //Sort the values
-        sortB(valueB,3);
-        //Display them again
-        cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
-        showB(valueB,3);
+        if(!sort(valueB, numToSort)) { //repeat swap is true, false-> return true, repeat until true, //not false//swap inside the function
+            //Display them again
+            cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
+            showB(valueB,3);
+        }
         
         //Declare board array
         pair<char, char> board[ROWS][COLS];
@@ -137,8 +145,11 @@ int main(int argc, char** argv)  {
                 board[i][j] = make_pair( ' ', ' ' ); //Blank space on each space
             }
         }
-              
-        cout<<endl<<"This is the Yut Nori Game Board"<<endl;
+        
+        cout<<endl; 
+        tilde(15);  //print out stars by using defult argument
+        cout<<" "<<setw(20)<<" "<<"This is the Yut Nori Game Board"<<endl; //without " ", the title doesn't move to the center
+        tilde(15);
         cout<<"Arriving from Starting position (0 0) to come back to (0 0) is winning the game"<<endl<<endl;
         grid(x,y);   //Show pathway on the grid
         cout<<endl;  //give a one line space after showing example grid
@@ -170,9 +181,9 @@ int main(int argc, char** argv)  {
                 user += count; //User's positions adding up from each count
                 if( user < pairArray.size ) { //This if, without this, i got sometime failed and successful result. not over size 24. 
                     cout<<endl<<"User(x) will move "<<count<<" steps."<<endl;  //Explain how much user will move from the result of sticks
-     cout << "user=" << user << "  comp=" << comp << endl;
-     cout << "pairArray.array[user].first=" << pairArray.array[user].first << "pairArray.array[user].second=" << pairArray.array[user].second << endl; 
-     cout << "pairArray.array[comp].first=" << pairArray.array[comp].first << "pairArray.array[comp].second=" << pairArray.array[comp].second << endl; 
+     cout << "user = " << user << "  compputer = " << comp << endl;
+     cout << "pairArray.array[user].first = " << pairArray.array[user].first << "  pairArray.array[user].second = " << pairArray.array[user].second << endl; 
+     cout << "pairArray.array[comp].first = " << pairArray.array[comp].first << "  pairArray.array[comp].second = " << pairArray.array[comp].second << endl; 
                     board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' );    
                     board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' );  
 
@@ -202,6 +213,10 @@ int main(int argc, char** argv)  {
                     comp += count; //Computer's positions adding up from each count
                     if(comp < pairArray.size ) {
                         cout<<endl<<"Computer(y) will move "<<count<<" steps."<<endl;  //Explain how much computer will move from the result of sticks
+        cout << "user = " << user << "  computer = " << comp << endl;
+        cout << "pairArray.array[user].first = " << pairArray.array[user].first << "  pairArray.array[user].second = " << pairArray.array[user].second << endl; 
+        cout << "pairArray.array[comp].first = " << pairArray.array[comp].first << "  pairArray.array[comp].second = " << pairArray.array[comp].second << endl; 
+     
                         //board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' );       
                         board[pairArray.array[comp].first][pairArray.array[comp].second] = make_pair( ' ', 'y' ); 
                         board[pairArray.array[user].first][pairArray.array[user].second] = make_pair( 'x', ' ' );      
@@ -224,9 +239,12 @@ int main(int argc, char** argv)  {
                 }while((count==4 || count==5) && comp < pairArray.size); //Loops until sticks are white,white,white,white or black,black,black,black
 
             if (user>=23){ //When user passed the a20 position
+                tilde(15); // shows ~~~~
                 cout<<"Congraulation! User(x) won!"<<endl;
 ////                data<<"User"<<endl;     //When user won, File the "User"
+                
             }else if (comp>=23){  //When computer passed the a20 position
+                tilde(15); // shows ~~~~
                 cout<<"Sorry. Computer(y) has won. User(x) lost"<<endl;
 ////                data<<"Computer"<<endl; //When computer won, File the "Computer"
             }
@@ -242,14 +260,14 @@ int main(int argc, char** argv)  {
         cout<<endl<<"The unsorted values are: "<<endl;
         showS(valueS,SIZE);
         //Sort the values
-        sortS(valueS,SIZE);
+        sort(valueS,SIZE);
         //Display the values again
-        cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
+        cout<<"The sorted values of High percentage to Low percentage are: "<<endl;
         showS(valueS,SIZE);
         
-        return 0;
-
         delete pairArray.array;
+        exit();  //Bye 
+        return 0;
 }
 
 void  prntAry( pair<char, char> board[][COLS],int ROWS ){  //[][COLS]  == 2-D
@@ -339,21 +357,21 @@ void showS(const int array[], int size){
     }cout<<endl;
 }
 
-void sortS(int array[], int size){
+void sort(int array[], int size){  //Selection sort
     int scan; //start scan
-    int mindex; //min index
-    int mvalue; //min value
-    for(scan = 0; scan < (size - 1); scan++){
-        mindex = scan;
-        mvalue = array[scan];
+    int maxind; //max index
+    int maxval; //max value
+    for(scan = 0; scan < (size - 1); scan++){  //Do not chancge 
+        maxind = scan;
+        maxval = array[scan];
         for(int index = scan+1; index < size; index++){
-            if(array[index] < mvalue){
-                mvalue = array[index];
-                mindex = index;
+            if(array[index] > maxval){ //if it is min, change to < min :array[index] > maxval
+                maxval = array[index];
+                maxind = index;
             }
         }
-        array[mindex] = array[scan];
-        array[scan] = mvalue;
+        array[maxind] = array[scan];
+        array[scan] = maxval;
     }
 }
 
@@ -363,12 +381,37 @@ void showB(const int array[], int size){
     }cout<<endl;
 }
 
-void sortB(int array[], int size){ 
-    bool swap;
+//void sortB(int array[], int size){ 
+//    bool swap;
+//    int temp;
+//    do{
+//        swap = false;
+//        for(int count = 0; count < (size - 1); count++){
+//            if(array[count] > array[count + 1]){
+//                temp = array[count];
+//                array[count] = array[count + 1];
+//                array[count +1 ] = temp;
+//                swap = true;
+//            }
+//        }
+//    }while(swap);
+//}
+
+bool sort(int array[], short size){  //Bubble sort
+    bool swap;// = false;
     int temp;
-    do{
-        swap = false;
-        for(int count = 0; count < (size - 1); count++){
+//    for(int count = 0; count < (size - 1); count++){
+//        if(array[count] > array[count + 1]){
+//            temp = array[count];
+//            array[count] = array[count + 1];
+//            array[count +1 ] = temp;
+//            swap = true;
+//        }
+//    }
+    
+    do {
+        swap=false;
+         for(int count = 0; count < (size - 1); count++){
             if(array[count] > array[count + 1]){
                 temp = array[count];
                 array[count] = array[count + 1];
@@ -377,7 +420,10 @@ void sortB(int array[], int size){
             }
         }
     }while(swap);
+    
+    return swap;  //Returning boolean
 }
+
 
 int searchB(const int array[], int num, int value){
     int first = 0,          //First array element
@@ -411,4 +457,21 @@ int searchL(const int list[], int num, int value){
         index++; //go to the next element
     }
     return posit;  //Return the position, or -1
+}
+
+void tilde(int cols, int rows){
+    for (int down=0; down<rows; down++){
+        for (int across=0; across<cols; across++){
+            cout<<" ~  ~ ";
+        }cout<<endl;
+    }
+}
+
+//void ahead(){
+//   
+//}
+
+void exit(){
+    cout<<"Bye! Have a nice day!"<<endl;
+    exit(0);
 }
