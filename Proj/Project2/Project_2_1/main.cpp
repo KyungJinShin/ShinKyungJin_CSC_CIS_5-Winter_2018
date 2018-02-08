@@ -59,7 +59,7 @@ int main(int argc, char** argv)  {
     short comp=0;   //Computer for Yut Nori Game
     int num;        //Integer Number, but I will range to 0 to 3
     string winner;  //To file the winner of Yut Nori Game
-    short numToSort = 3;
+    short numSort = 3;
     
     //Declare, Initialize position on the board
     pair<int, int> player1( 0, 0 ); //Initially player1(user) stars at (0,0)
@@ -207,7 +207,7 @@ int main(int argc, char** argv)  {
         cout<<"The unsorted values are: "<<endl;
         showB(valueB,3);
         //Sort the values
-        if(!sort(valueB, numToSort)) { //repeat swap is true, false-> return true, repeat until true, //not false//swap inside the function
+        if(!sort(valueB, numSort)) { //repeat swap is true, false-> return true, repeat until true, //not false//swap inside the function
             //Display them again
             cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
             showB(valueB,3);
@@ -411,7 +411,7 @@ int main(int argc, char** argv)  {
         cout<<"The unsorted values are: "<<endl;
         showB(valueB,3);
         //Sort the values
-        if(!sort(valueB, numToSort)) { //repeat swap is true, false-> return true, repeat until true, //not false//swap inside the function
+        if(!sort(valueB, numSort)) { //repeat swap is true, false-> return true, repeat until true, //not false//swap inside the function
             //Display them again
             cout<<"The sorted values of Low percentage to High percentage are: "<<endl;
             showB(valueB,3);
