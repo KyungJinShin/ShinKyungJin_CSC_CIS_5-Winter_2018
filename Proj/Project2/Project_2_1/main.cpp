@@ -13,22 +13,17 @@
 #include <vector>   //Vector Function Library
 #include <fstream>  //File Library
 #include <string>   //String Library
-//#include <algorithm> //Linear Searching - not necessary
+#include <algorithm> //Pair Library -(LinearSearch)not necessary
 using namespace std;
 
 //User Libraries  
+#include "PairAry.h"  //From PairAry.h structure
 
 //Global Constants - Math/Physics Constants, Conversions,
 //                   2-D Array Dimensions
 const int COLS=7; //Total 7 Columns for print Array and game board
 const int BLACK = 3; //Up to 3 black for 2D array of black and white sticks
 const int COL=2;  //Information(declare x and y), 2-D array
-
-//structure            //When I make library to struct PairArray, sometimes run successful and run failed 
-struct PairArray{      //However, now it runs successfully
-    pair<int, int> *array;  //position of the array, * as pointer
-    int size;               //size of the array
-};
 
 //Function Prototypes
 int searchL(const int [], int, int); //Linear searchlist
